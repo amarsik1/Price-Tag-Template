@@ -1,12 +1,10 @@
 import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Button } from "baseui/button";
 import {
   HeaderNavigation,
   ALIGN,
   StyledNavigationList,
   StyledNavigationItem
 } from "baseui/header-navigation";
-import { StyledLink } from "baseui/link";
 import Document from "../Document";
 import {
   Checkbox,
