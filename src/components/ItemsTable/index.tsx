@@ -5,6 +5,7 @@ import {
 } from 'baseui/table-semantic';
 import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
 import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton } from "baseui/modal";
+import * as XLSX from 'xlsx';
 
 import { Item } from "../../interfaces";
 import './styles.css'
@@ -20,6 +21,14 @@ const CardList = ({ items, deleteItem }: Props) => {
   const handleDeleteItem = () => {
     deleteItem(idToDelete as number)
     setIdToDelete(null);
+  };
+
+  const handleOnExport = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(items);
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Ціни товарів');
+    XLSX.writeFile(wb, "MyExcel.xlsx")
   };
 
   return (
@@ -45,7 +54,13 @@ const CardList = ({ items, deleteItem }: Props) => {
           {(row) => row.oldFullPrice && `${row.oldFullPrice}.${row.oldCentPrice}`}
         </TableBuilderColumn>
 
-        <TableBuilderColumn<Item> header="">
+        <TableBuilderColumn<Item>
+          header={(
+            <Button onClick={handleOnExport}>
+              Експорт
+            </Button>
+          )}
+        >
           {(row) => (
             <>
               <Button
