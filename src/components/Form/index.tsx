@@ -8,10 +8,6 @@ import { Item } from "../../interfaces";
 
 import './styles.css';
 
-interface Props {
-  addItem: (item: Item) => void;
-}
-
 const defaultValues = {
   name: '',
   description: '',
@@ -21,21 +17,31 @@ const defaultValues = {
   isDiscount: false,
   oldFullPrice: '',
   oldCentPrice: '',
+};
+
+type FormValues = typeof defaultValues;
+
+interface Props {
+  values?: FormValues;
+  addItem: (item: Item) => void;
 }
 
-const Form = ({ addItem }: Props) => {
+const Form = ({ addItem, values = defaultValues }: Props) => {
   const {
     handleSubmit,
     control,
     reset,
     watch,
-  } = useForm({ defaultValues });
+  } = useForm({ defaultValues: values });
 
   const isDiscount = watch('isDiscount');
 
-  const onSubmit = (data: Omit<Item, 'id'>) => {
+  const onSubmit = (data: FormValues) => {
+    const { isDiscount, oldCentPrice, oldFullPrice } = data;
     addItem({
       ...data,
+      oldCentPrice: isDiscount ? oldCentPrice : '',
+      oldFullPrice: isDiscount ? oldFullPrice : '',
       id: Date.now(),
     });
     reset();
@@ -49,12 +55,12 @@ const Form = ({ addItem }: Props) => {
           name="name"
           rules={{ required: true }}
           control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
             <div>
               <FormControl
                 label="Назва продукту"
               >
-                <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
             </div>
           )}
@@ -64,12 +70,12 @@ const Form = ({ addItem }: Props) => {
           rules={{ required: true }}
           name="description"
           control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
             <div>
               <FormControl
                 label="Опис продукту"
               >
-                <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
             </div>
           )}
@@ -79,13 +85,13 @@ const Form = ({ addItem }: Props) => {
           rules={{ required: true, pattern: /^[0-9]/ }}
           name="fullPrice"
           control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
             <div>
               <FormControl
                 label="Ціна (ціле число)"
                 caption="Тільки числа"
               >
-                <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
             </div>
           )}
@@ -95,13 +101,13 @@ const Form = ({ addItem }: Props) => {
           name="centPrice"
           rules={{ required: true, maxLength: 2, pattern: /[0-9]{2}/ }}
           control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
             <div>
               <FormControl
                 label="Ціна (копійки)"
                 caption="Тільки два числа"
               >
-                <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
             </div>
           )}
@@ -111,12 +117,12 @@ const Form = ({ addItem }: Props) => {
           name="country"
           rules={{ required: true }}
           control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
             <div>
               <FormControl
                 label="Країна"
               >
-                <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
             </div>
           )}
@@ -125,10 +131,11 @@ const Form = ({ addItem }: Props) => {
         <Controller
           name="isDiscount"
           control={control}
-          render={({ field: { value, onChange }, fieldState: { error } }) => (
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
             <div>
               <FormControl>
                 <Checkbox
+                  id={name}
                   checked={value}
                   onChange={e => onChange(e.target.checked)}
                 >
@@ -145,13 +152,13 @@ const Form = ({ addItem }: Props) => {
               rules={{ required: true, pattern: /^[0-9]/ }}
               name="oldFullPrice"
               control={control}
-              render={({ field: { value, onChange }, fieldState: { error } }) => (
+              render={({ field: { value, onChange, name }, fieldState: { error } }) => (
                 <div>
                   <FormControl
                     label="Стара ціна (ціле число)"
                     caption="Тільки числа"
                   >
-                    <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                    <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
                   </FormControl>
                 </div>
               )}
@@ -161,13 +168,13 @@ const Form = ({ addItem }: Props) => {
               name="oldCentPrice"
               rules={{ required: true, maxLength: 2, pattern: /[0-9]{2}/ }}
               control={control}
-              render={({ field: { value, onChange }, fieldState: { error } }) => (
+              render={({ field: { value, onChange, name }, fieldState: { error } }) => (
                 <div>
                   <FormControl
                     label="Стара ціна (копійки)"
                     caption="Тільки два числа"
                   >
-                    <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                    <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
                   </FormControl>
                 </div>
               )}
@@ -176,7 +183,9 @@ const Form = ({ addItem }: Props) => {
         )}
       </div>
 
-      <Button className="form-submitBtn" type="submit">Додати товар</Button>
+      <Button className="form-submitBtn" type="submit">
+        {values?.name ? "Зберегти" : "Додати товар"}
+      </Button>
     </form>
   )
 }

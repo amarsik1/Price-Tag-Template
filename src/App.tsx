@@ -21,6 +21,10 @@ const App = () => {
     setItems((prev) => prev.filter((item) => item.id !== id));
   }
 
+  const updateItem = (id: number, newData: Item) => {
+    setItems((prev) => prev.map((item) => item.id === id ? newData : item));
+  }
+
   const toggleIsPreview = () => setIsPreview((prev) => !prev);
 
   return (
@@ -43,6 +47,7 @@ const App = () => {
             <ItemsTable
               items={items}
               deleteItem={deleteItem}
+              updateItem={updateItem}
             />
           </div>
         </div>
