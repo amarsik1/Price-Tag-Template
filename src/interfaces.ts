@@ -3,5 +3,6 @@ export interface Item {
     description: string;
     fullPrice: string;
     centPrice: string;
+    country: string;
     id: number;
 }

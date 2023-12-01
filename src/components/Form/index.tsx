@@ -16,6 +16,7 @@ const defaultValues = {
   description: '',
   fullPrice: '',
   centPrice: '',
+  country: '',
 }
 
 const Form = ({ addItem }: Props) => {
@@ -92,6 +93,21 @@ const Form = ({ addItem }: Props) => {
               <FormControl
                 label="Ціна (копійки)"
                 caption="Тільки два числа"
+              >
+                <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+              </FormControl>
+            </div>
+          )}
+        />
+
+        <Controller
+          name="country"
+          rules={{ required: true }}
+          control={control}
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
+            <div>
+              <FormControl
+                label="Країна"
               >
                 <Input error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
