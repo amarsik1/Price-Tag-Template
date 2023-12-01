@@ -1,8 +1,12 @@
 .container {
-  width: 100%;
   max-width: 800px;
-  height: 100%;
   margin: 0 auto;
+}
+
+.content {
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
   padding: 10px;
   box-sizing: border-box;
 }
@@ -26,5 +30,9 @@
 }
 
 .pdf-preview {
-  height: calc(100% - 60px);
+  height: 100%;
+}
+
+.pdf-preview iframe {
+  border: none;
 }

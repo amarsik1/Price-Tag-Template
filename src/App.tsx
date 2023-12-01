@@ -31,21 +31,21 @@ const App = () => {
       {isPreview ? (
         <div className='pdf-preview'>
 
-        <PDFViewer width="100%" height={"100%"}>
-          <Document items={items} />
-        </PDFViewer>
+          <PDFViewer width="100%" height={"100%"}>
+            <Document items={items} />
+          </PDFViewer>
         </div>
       ) : (
-        <div className="container">
+        <div className="content">
+          <div className="container">
+            <Form addItem={addItem} />
 
-          <Form addItem={addItem} />
-
-          <CardList
-            items={items}
-            deleteItem={deleteItem}
-          />
-        </div >
-
+            <CardList
+              items={items}
+              deleteItem={deleteItem}
+            />
+          </div>
+        </div>
       )}
     </div>
   )
