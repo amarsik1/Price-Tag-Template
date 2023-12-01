@@ -17,6 +17,11 @@ interface Props {
 const CardList = ({ items, deleteItem }: Props) => {
   const [idToDelete, setIdToDelete] = useState<null | number>(null);
 
+  const handleDeleteItem = () => {
+    deleteItem(idToDelete as number)
+    setIdToDelete(null);
+  };
+
   return (
     <div className="cardContainer">
       <TableBuilder data={items}>
@@ -64,7 +69,7 @@ const CardList = ({ items, deleteItem }: Props) => {
       >
         <ModalHeader>Ви впевнені що хочете видалити?</ModalHeader>
         <ModalFooter>
-          <ModalButton kind={ButtonKind.tertiary} onClick={() => deleteItem(idToDelete as number)}>
+          <ModalButton kind={ButtonKind.tertiary} onClick={handleDeleteItem}>
             <span style={{ color: 'red' }}>Видалити</span>
           </ModalButton>
           <ModalButton onClick={() => setIdToDelete(null)}>Відмінити</ModalButton>
