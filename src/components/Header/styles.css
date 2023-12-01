@@ -1,0 +1,19 @@
+.header {
+  padding: 0 10px;
+}
+
+.mobileLabel {
+  display: none;
+}
+@media (max-width: 600px) {
+  .mobileLabel {
+    display: inline-block;
+  }
+  .desktopLabel {
+    display: none;
+  }
+}
+
+.drawer-container {
+  padding: 0;
+}

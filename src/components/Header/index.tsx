@@ -5,14 +5,23 @@ import {
   StyledNavigationList,
   StyledNavigationItem
 } from "baseui/header-navigation";
-import Document from "../Document";
+import classNames from "classnames";
 import {
   Checkbox,
   STYLE_TYPE,
   LABEL_PLACEMENT
 } from "baseui/checkbox";
+
+import { MobileHeader } from "baseui/mobile-header";
+import { Menu } from 'baseui/icon';
+
+import Document from "../Document";
 import { Item } from "../../interfaces";
-import classNames from "classnames";
+
+import './styles.css';
+import { Drawer } from "baseui/drawer";
+import { useState } from "react";
+import { ListItem, ListItemLabel } from "baseui/list";
 
 interface Props {
   items: Item[];
@@ -21,23 +30,78 @@ interface Props {
 }
 
 const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
+  const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  if (window.innerWidth <= 600) {
+
+    return (
+      <>
+        <MobileHeader
+          title={`Додано: ${items.length}`}
+          actionButtons={[
+            {
+              renderIcon: Menu,
+              onClick: () => setIsDrawerOpen(true),
+              label: "Меню"
+            }
+          ]}
+        />
+
+        <Drawer
+          isOpen={isDrawerOpen}
+          autoFocus
+          onClose={() => setIsDrawerOpen(false)}
+        >
+          <ul className="drawer-container">
+            <ListItem
+              endEnhancer={() => (
+                <Checkbox
+                  checked={isPreview}
+                  checkmarkType={STYLE_TYPE.toggle_round}
+                  onChange={toggleIsPreview}
+                />
+              )}
+            >
+              <ListItemLabel>
+                Переглянути
+              </ListItemLabel>
+            </ListItem>
+
+            <ListItem>
+              <ListItemLabel>
+                <PDFDownloadLink
+                  className={classNames("downloadBtn", { disabled: !items.length })}
+                  document={<Document items={items} />}>
+                  {({ loading }) =>
+                    loading ? "Файл завантажується" : "Завантажити файл"
+                  }
+                </PDFDownloadLink>
+              </ListItemLabel>
+            </ListItem>
+          </ul>
+        </Drawer>
+      </>
+    );
+  }
+
   return (
-    <div style={{ padding: '0 10px' }}>
+    <header className="header">
       <HeaderNavigation>
         <StyledNavigationList $align={ALIGN.left}>
-          <StyledNavigationItem>Uber</StyledNavigationItem>
+          <StyledNavigationItem>
+            Додано: {items.length}
+          </StyledNavigationItem>
         </StyledNavigationList>
+
         <StyledNavigationList $align={ALIGN.center} />
 
-        {Boolean(items.length) && (
-          <>
-            <StyledNavigationList $align={ALIGN.right}>
+        <StyledNavigationList $align={ALIGN.right}>
+          {Boolean(items.length) && (
+            <>
               <StyledNavigationItem>
-                Додано: {items.length}
-              </StyledNavigationItem>
-            </StyledNavigationList>
 
-            <StyledNavigationList $align={ALIGN.right}>
+              </StyledNavigationItem>
+
               <StyledNavigationItem>
                 <Checkbox
                   checked={isPreview}
@@ -48,11 +112,9 @@ const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
                   Переглянути
                 </Checkbox>
               </StyledNavigationItem>
-            </StyledNavigationList>
-          </>
-        )}
+            </>
+          )}
 
-        <StyledNavigationList $align={ALIGN.right}>
           <StyledNavigationItem>
             <PDFDownloadLink
               className={classNames("downloadBtn", { disabled: !items.length })}
@@ -64,7 +126,7 @@ const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
           </StyledNavigationItem>
         </StyledNavigationList>
       </HeaderNavigation>
-    </div>
+    </header>
   )
 };
 
