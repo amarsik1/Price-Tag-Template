@@ -26,7 +26,7 @@ interface PDFComponent {
 
 const Document = ({ items }: PDFComponent) => (
     <PDFDocument>
-        <Page size="A4">
+        <Page size="A4" style={styles.page}>
             <View style={styles.body}>
                 {items.map(({ name, description, fullPrice, centPrice, country, id, oldCentPrice, oldFullPrice }) => (
                     <View style={styles.card} key={id} wrap={false}>
