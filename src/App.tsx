@@ -1,13 +1,13 @@
+import { useState } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import Document from './components/Document';
 import { Item } from './interfaces';
 import { useLocalStorage } from './hooks';
 import Header from './components/Header';
 import Form from './components/Form';
-import CardList from './components/CardList';
+import ItemsTable from './components/ItemsTable';
 
 import './App.css';
-import { useState } from 'react';
 
 const App = () => {
   const [items, setItems] = useLocalStorage<Item[]>('items', []);
@@ -40,7 +40,7 @@ const App = () => {
           <div className="container">
             <Form addItem={addItem} />
 
-            <CardList
+            <ItemsTable
               items={items}
               deleteItem={deleteItem}
             />
