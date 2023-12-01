@@ -16,11 +16,29 @@ const styles = StyleSheet.create({
         fontFamily: 'Roboto',
         border: '1px black solid'
     },
+    discountLabel: {
+        marginLeft: -5,
+        marginTop: 5,
+        width: "100",
+        fontSize: 16,
+        paddingBottom: 5,
+        paddingLeft: 5,
+        backgroundColor: 'red',
+        color: 'yellow',
+        position: 'relative',
+    },
+    oldPriceLabel: {
+        fontSize: 4,
+        paddingLeft: 5,
+    },
     header: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        gap: 5,
     },
-    headerLeft: {},
+    headerLeft: {
+        textOverflow: 'ellipsis',
+    },
     date: {
         fontSize: 5,
         color: 'gray',
@@ -32,15 +50,19 @@ const styles = StyleSheet.create({
     },
     qrCode: {
         width: 50,
+        marginLeft: '-5px',
+        marginBottom: '-5px',
     },
     footerRight: {
         textAlign: 'right',
+        alignItems: 'flex-end',
         flex: 1,
     },
     priceContainer: {
         justifyContent: 'flex-end',
         alignItems: 'center',
         flexDirection: 'row',
+        position: 'relative',
     },
     fullPrice: {
         fontSize: 24,
@@ -54,6 +76,19 @@ const styles = StyleSheet.create({
     currencySymbol: {
         width: 6,
         height: 6,
+    },
+    oldFullPrice: {
+        fontSize: 14,
+        fontWeight: 'bold',
+    },
+    oldCentPrice: {
+        fontSize: 5,
+        fontWeight: 300,
+        marginBottom: 2,
+    },
+    oldCurrencySymbol: {
+        width: 4,
+        height: 4,
     },
     pricePerItemLabel: {
         fontSize: 6
@@ -72,8 +107,20 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 8,
+        width: '75%',
         color: '#444',
-    }
+    },
+    redColor: {
+        color: '#900',
+    },
+    redLine: {
+        borderBottom: '2px solid red',
+        position: 'absolute',
+        left: 0,
+        width: '100%',
+        height: '5px',
+        transform: 'rotate(-22deg)',
+    },
 });
 
 export default styles;

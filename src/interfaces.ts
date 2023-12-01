@@ -4,5 +4,7 @@ export interface Item {
     fullPrice: string;
     centPrice: string;
     country: string;
+    oldFullPrice?: string;
+    oldCentPrice?: string;
     id: number;
 }

@@ -4,14 +4,13 @@ import {
     View,
     Font,
     Text,
-    Svg,
-    Path,
 } from '@react-pdf/renderer';
 import moment from 'moment';
 
 import { Item } from '../../interfaces';
 import QRCode from '../QRCode';
 import { priceFormatter } from '../../formatters';
+import UAHSvg from '../UAHSvg';
 
 import styles from './styles';
 
@@ -29,15 +28,35 @@ const Document = ({ items }: PDFComponent) => (
     <PDFDocument>
         <Page size="A4">
             <View style={styles.body}>
-                {items.map(({ name, description, fullPrice, centPrice, country, id }) => (
+                {items.map(({ name, description, fullPrice, centPrice, country, id, oldCentPrice, oldFullPrice }) => (
                     <View style={styles.card} key={id} wrap={false}>
                         <View style={styles.header}>
                             <View style={styles.headerLeft}>
                                 <Text style={styles.title}>{name}</Text>
                                 <Text style={styles.description}>{description}</Text>
+                                {Boolean(oldCentPrice) && (
+                                    <View style={styles.discountLabel}>
+                                        <Text>Розпродаж!</Text>
+                                    </View>
+                                )}
                             </View>
 
-                            <Text style={styles.date}>{moment(id).format('DD.MM.YYYY')}</Text>
+                            <View>
+                                <Text style={styles.date}>{moment(id).format('DD.MM.YYYY')}</Text>
+                                {oldFullPrice && oldCentPrice && (
+                                    <>
+                                        <Text style={styles.oldPriceLabel}>Стара ціна:</Text>
+                                        <View style={styles.priceContainer}>
+                                            <Text style={styles.oldFullPrice}>{priceFormatter(oldFullPrice)}</Text>
+                                            <View>
+                                                <Text style={styles.oldCentPrice}>{oldCentPrice}</Text>
+                                                <UAHSvg style={styles.oldCurrencySymbol} />
+                                            </View>
+                                            <View style={styles.redLine}></View>
+                                        </View>
+                                    </>
+                                )}
+                            </View>
                         </View>
 
 
@@ -47,19 +66,27 @@ const Document = ({ items }: PDFComponent) => (
                             </View>
 
                             <View style={styles.footerRight}>
+
                                 <View style={styles.priceContainer}>
-                                    <Text style={styles.fullPrice}>{priceFormatter(fullPrice)}</Text>
+                                    <Text
+                                        style={{
+                                            ...styles.fullPrice,
+                                            color: oldCentPrice ? 'red' : 'black',
+                                        }}
+                                    >
+                                        {priceFormatter(fullPrice)}
+                                    </Text>
+
                                     <View>
-                                        <Text style={styles.centPrice}>{centPrice}</Text>
-                                        <Svg viewBox="0 0 325 435" style={styles.currencySymbol}>
-                                            <Path
-                                                fill="black"
-                                                d="M226.8,197.6l-49.1,39.7h144.2v43.9h-187c-12.5,9.4-19.9,20.9-19.9,35.5c0,25.1,19.9,38.7,55.4,38.7
-          c30.3,0,56.4-14.6,77.3-44.9l57.5,38.7c-31.3,48.1-87.8,72.1-141.1,72.1c-70,0-122.2-33.4-122.2-88.8c0-17.8,6.3-36.6,18.8-51.2
-          H3.2v-43.9h91.9l50.2-39.7H3.2v-43.9h186c13.6-12.5,19.9-24,19.9-37.6c0-21.9-19.9-37.6-50.2-37.6c-29.3,0-54.3,16.7-72.1,44.9
-          L31.4,85.8c30.3-48.1,79.4-72.1,132.7-72.1c72.1,0,119.1,37.6,119.1,88.8c0,18.8-6.3,37.6-16.7,51.2h55.4v43.9H226.8z"
-                                            />
-                                        </Svg>
+                                        <Text
+                                            style={{
+                                                ...styles.centPrice,
+                                                color: oldCentPrice ? 'red' : 'black',
+                                            }}
+                                        >
+                                            {centPrice}
+                                        </Text>
+                                        <UAHSvg style={styles.currencySymbol} fillColor={oldCentPrice ? 'red' : 'black'} />
                                     </View>
                                 </View>
                                 <Text style={styles.pricePerItemLabel}>Ціна за 1 шт.</Text>
