@@ -4,12 +4,13 @@ import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
 import * as XLSX from 'xlsx';
 import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
 import { ButtonGroup } from "baseui/button-group";
-import Form from "components/Form";
+import * as XLSX from 'xlsx';
+import { Checkbox } from "baseui/checkbox";
 import { Input } from "baseui/input";
 import { Search } from "baseui/icon";
-import Highlighted from "components/Highlighted/Highlighted";
-import { Checkbox } from "baseui/checkbox";
 
+import Form from "components/Form";
+import Highlighted from "components/Highlighted/Highlighted";
 import { Item, UseTableItemGeneric } from "interfaces";
 import { useSearch, useTable } from "hooks";
 import DownloadPDFButton from "components/DownloadPDFButton";
@@ -80,6 +81,14 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
     data.filter(({ selected }) => selected)
   ), [data]);
 
+  const handleOnExport = () => {
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(items);
+
+    XLSX.utils.book_append_sheet(wb, ws, 'Ціни товарів');
+    XLSX.writeFile(wb, "MyExcel.xlsx")
+  };
+
   return (
     <div className="cardContainer">
       <ButtonGroup
@@ -97,7 +106,9 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
           toReadyLabel="Підготувати виділені"
           readyLabel="Завантажити виділені"
         />
-
+        <Button onClick={handleOnExport}>
+          Експорт
+        </Button>
       </ButtonGroup>
 
       <TableBuilder data={filteredData}>
