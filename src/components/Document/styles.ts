@@ -27,14 +27,18 @@ const styles = StyleSheet.create({
     },
     footer: {
         justifyContent: 'space-between',
+        alignItems: 'flex-end',
         flexDirection: 'row',
     },
     qrCode: {
         width: 50,
     },
-    footerRight: {},
+    footerRight: {
+        textAlign: 'right',
+        flex: 1,
+    },
     priceContainer: {
-        justifyContent: 'space-between',
+        justifyContent: 'flex-end',
         alignItems: 'center',
         flexDirection: 'row',
     },
@@ -68,6 +72,7 @@ const styles = StyleSheet.create({
     },
     description: {
         fontSize: 8,
+        color: '#444',
     }
 });
 

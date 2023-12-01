@@ -5,12 +5,14 @@ import {
     Font,
     Text,
     Svg,
-    Image,
     Path,
 } from '@react-pdf/renderer';
+import moment from 'moment';
 
 import { Item } from '../../interfaces';
-import qr from '../../qr.png';
+import QRCode from '../QRCode';
+import { priceFormatter } from '../../formatters';
+
 import styles from './styles';
 
 Font.register({
@@ -27,26 +29,26 @@ const Document = ({ items }: PDFComponent) => (
     <PDFDocument>
         <Page size="A4">
             <View style={styles.body}>
-                {items.map(({ name, description, fullPrice, centPrice }) => (
-                    <View style={styles.card} key={name} wrap={false}>
+                {items.map(({ name, description, fullPrice, centPrice, country, id }) => (
+                    <View style={styles.card} key={id} wrap={false}>
                         <View style={styles.header}>
                             <View style={styles.headerLeft}>
                                 <Text style={styles.title}>{name}</Text>
                                 <Text style={styles.description}>{description}</Text>
                             </View>
 
-                            <Text style={styles.date}>01.01.2023</Text>
+                            <Text style={styles.date}>{moment(id).format('DD.MM.YYYY')}</Text>
                         </View>
 
 
                         <View style={styles.footer}>
                             <View style={styles.qrCode}>
-                                <Image src={qr} />
+                                <QRCode />
                             </View>
 
                             <View style={styles.footerRight}>
                                 <View style={styles.priceContainer}>
-                                    <Text style={styles.fullPrice}>{fullPrice}</Text>
+                                    <Text style={styles.fullPrice}>{priceFormatter(fullPrice)}</Text>
                                     <View>
                                         <Text style={styles.centPrice}>{centPrice}</Text>
                                         <Svg viewBox="0 0 325 435" style={styles.currencySymbol}>
@@ -61,8 +63,8 @@ const Document = ({ items }: PDFComponent) => (
                                     </View>
                                 </View>
                                 <Text style={styles.pricePerItemLabel}>Ціна за 1 шт.</Text>
-                                <Text style={styles.country}>Україна</Text>
-                                <Text style={styles.companyName}>Назва магазину</Text>
+                                <Text style={styles.country}>{country}</Text>
+                                <Text style={styles.companyName}>PREMIUM ALCOHOL</Text>
                             </View>
                         </View>
                     </View>
