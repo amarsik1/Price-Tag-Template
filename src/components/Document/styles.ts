@@ -112,6 +112,7 @@ const styles = StyleSheet.create({
         fontSize: 8,
         width: '75%',
         color: '#444',
+        lineHeight: 1,
     },
     redColor: {
         color: '#900',

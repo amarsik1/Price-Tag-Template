@@ -1,22 +1,24 @@
-import { useState } from "react";
-import {
-  TableBuilder,
-  TableBuilderColumn,
-} from 'baseui/table-semantic';
+import React, { useMemo, useState } from "react";
+import { TableBuilder, TableBuilderColumn } from 'baseui/table-semantic';
 import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
-import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton } from "baseui/modal";
 import * as XLSX from 'xlsx';
+import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
+import { ButtonGroup } from "baseui/button-group";
 
 import { Item } from "../../interfaces";
+import Form from "../Form";
+
 import './styles.css'
 
 interface Props {
   items: Item[];
   deleteItem: (id: number) => void;
+  updateItem: (id: number, newData: Item) => void;
 }
 
-const CardList = ({ items, deleteItem }: Props) => {
+const CardList = ({ items, deleteItem, updateItem }: Props) => {
   const [idToDelete, setIdToDelete] = useState<null | number>(null);
+  const [idToEdit, setIdToEdit] = useState<null | number>(null);
 
   const handleDeleteItem = () => {
     deleteItem(idToDelete as number)
@@ -31,6 +33,21 @@ const CardList = ({ items, deleteItem }: Props) => {
     XLSX.writeFile(wb, "MyExcel.xlsx")
   };
 
+  const handleUpdateItem = (newData: Item) => {
+    if (!idToEdit) return;
+
+    updateItem(idToEdit, newData);
+    setIdToEdit(null);
+  };
+
+  const itemToEdit = useMemo(() => {
+    if (idToEdit) {
+      return items.find(({ id }) => id === idToEdit) as Item;
+    }
+
+    return null;
+  }, [idToEdit, items]);
+
   return (
     <div className="cardContainer">
       <TableBuilder data={items}>
@@ -43,7 +60,7 @@ const CardList = ({ items, deleteItem }: Props) => {
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Країна-виробник">
-          {(row) => row.description}
+          {(row) => row.country}
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Ціна">
@@ -62,13 +79,18 @@ const CardList = ({ items, deleteItem }: Props) => {
           )}
         >
           {(row) => (
-            <>
+            <ButtonGroup>
+              <Button
+                onClick={() => setIdToEdit(row.id)}
+              >
+                Змінити
+              </Button>
               <Button
                 onClick={() => setIdToDelete(row.id)}
               >
                 Видалити
               </Button>
-            </>
+            </ButtonGroup>
           )}
         </TableBuilderColumn>
       </TableBuilder>
@@ -88,6 +110,28 @@ const CardList = ({ items, deleteItem }: Props) => {
             <span style={{ color: 'red' }}>Видалити</span>
           </ModalButton>
           <ModalButton onClick={() => setIdToDelete(null)}>Відмінити</ModalButton>
+        </ModalFooter>
+      </Modal>
+
+      <Modal
+        onClose={() => setIdToEdit(null)}
+        closeable
+        isOpen={Boolean(itemToEdit)}
+        animate
+        autoFocus
+        size={SIZE.default}
+        role={ROLE.dialog}
+      >
+        <ModalHeader></ModalHeader>
+        <ModalBody>
+          {itemToEdit && (
+            <Form values={itemToEdit} addItem={handleUpdateItem}></Form>
+          )}
+        </ModalBody>
+        <ModalFooter>
+          <ModalButton kind={ButtonKind.tertiary} onClick={() => setIdToEdit(null)}>
+            Відмінити
+          </ModalButton>
         </ModalFooter>
       </Modal>
     </div>

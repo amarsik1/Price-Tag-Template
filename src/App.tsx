@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { PDFViewer } from '@react-pdf/renderer';
 import Document from './components/Document';
 import { Item } from './interfaces';
@@ -19,6 +19,10 @@ const App = () => {
 
   const deleteItem = (id: number) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
+  }
+
+  const updateItem = (id: number, newData: Item) => {
+    setItems((prev) => prev.map((item) => item.id === id ? newData : item));
   }
 
   const toggleIsPreview = () => setIsPreview((prev) => !prev);
@@ -43,6 +47,7 @@ const App = () => {
             <ItemsTable
               items={items}
               deleteItem={deleteItem}
+              updateItem={updateItem}
             />
           </div>
         </div>
