@@ -91,7 +91,13 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
                 label="Ціна (ціле число)"
                 caption="Тільки числа"
               >
-                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input
+                  id={name}
+                  error={!!error?.type}
+                  value={value}
+                  onChange={({ target: { value } }) => onChange(value)}
+                  inputMode="numeric"
+                />
               </FormControl>
             </div>
           )}
@@ -107,7 +113,13 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
                 label="Ціна (копійки)"
                 caption="Тільки два числа"
               >
-                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input
+                  id={name}
+                  error={!!error?.type}
+                  value={value}
+                  onChange={({ target: { value } }) => onChange(value)}
+                  inputMode="numeric"
+                />
               </FormControl>
             </div>
           )}
@@ -158,7 +170,13 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
                     label="Стара ціна (ціле число)"
                     caption="Тільки числа"
                   >
-                    <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                    <Input
+                      id={name}
+                      error={!!error?.type}
+                      value={value}
+                      onChange={({ target: { value } }) => onChange(value)}
+                      inputMode="numeric"
+                    />
                   </FormControl>
                 </div>
               )}
@@ -174,7 +192,13 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
                     label="Стара ціна (копійки)"
                     caption="Тільки два числа"
                   >
-                    <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                    <Input
+                      id={name}
+                      error={!!error?.type}
+                      value={value}
+                      onChange={({ target: { value } }) => onChange(value)}
+                      inputMode="numeric"
+                    />
                   </FormControl>
                 </div>
               )}
