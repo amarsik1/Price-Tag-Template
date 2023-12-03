@@ -144,12 +144,16 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
           )}
         </TableBuilderColumn>
 
+        <TableBuilderColumn<Item> header="Копій">
+          {(row) => row.numberCopies || 1}
+        </TableBuilderColumn>
+
         <TableBuilderColumn<Item>
           header={(
             <Input
               value={searchValue}
               onChange={e => setSearchValue(e.target.value)}
-              placeholder="Controlled Input"
+              placeholder="Пошук"
               clearOnEscape
               startEnhancer={<Search size="18px" />}
             />

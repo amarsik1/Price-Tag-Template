@@ -7,6 +7,7 @@ export interface Item {
     oldFullPrice: string;
     oldCentPrice: string;
     isDiscount: boolean;
+    numberCopies: number;
     id: number;
 }
 
