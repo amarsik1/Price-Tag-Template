@@ -1,11 +1,9 @@
-import { PDFDownloadLink } from "@react-pdf/renderer";
 import {
   HeaderNavigation,
   ALIGN,
   StyledNavigationList,
   StyledNavigationItem
 } from "baseui/header-navigation";
-import classNames from "classnames";
 import {
   Checkbox,
   STYLE_TYPE,
@@ -15,13 +13,13 @@ import {
 import { MobileHeader } from "baseui/mobile-header";
 import { Menu } from 'baseui/icon';
 
-import Document from "../Document";
 import { Item } from "../../interfaces";
 
 import './styles.css';
 import { Drawer } from "baseui/drawer";
 import { useState } from "react";
 import { ListItem, ListItemLabel } from "baseui/list";
+import DownloadPDFButton from "../DownloadPDFButton";
 
 interface Props {
   items: Item[];
@@ -69,13 +67,10 @@ const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
 
             <ListItem>
               <ListItemLabel>
-                <PDFDownloadLink
-                  className={classNames("downloadBtn", { disabled: !items.length })}
-                  document={<Document items={items} />}>
-                  {({ loading }) =>
-                    loading ? "Файл завантажується" : "Завантажити файл"
-                  }
-                </PDFDownloadLink>
+                <DownloadPDFButton
+                  items={items}
+                  readyLabel="Завантажити файл"
+                />
               </ListItemLabel>
             </ListItem>
           </ul>
@@ -116,13 +111,10 @@ const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
           )}
 
           <StyledNavigationItem>
-            <PDFDownloadLink
-              className={classNames("downloadBtn", { disabled: !items.length })}
-              document={<Document items={items} />}>
-              {({ loading }) =>
-                loading ? "Файл завантажується" : "Завантажити файл"
-              }
-            </PDFDownloadLink>
+            <DownloadPDFButton
+              items={items}
+              readyLabel="Завантажити файл"
+            />
           </StyledNavigationItem>
         </StyledNavigationList>
       </HeaderNavigation>

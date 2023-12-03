@@ -1,3 +1,13 @@
 .cardContainer {
   margin-top: 50px;
 }
+.Table-buttonsAction {
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+@media (max-width: 600px) {
+  .Table-buttonsAction {
+    flex-direction: column;
+  }
+}

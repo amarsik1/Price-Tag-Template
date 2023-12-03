@@ -5,10 +5,14 @@ import * as XLSX from 'xlsx';
 import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
 import { ButtonGroup } from "baseui/button-group";
 
-import { Item } from "../../interfaces";
+import { Item, UseTableItemGeneric } from "../../interfaces";
 import Form from "../Form";
 
-import './styles.css'
+import { Checkbox } from "baseui/checkbox";
+import { useTable } from "../../hooks";
+import DownloadPDFButton from "../DownloadPDFButton";
+
+import './styles.css';
 
 interface Props {
   items: Item[];
@@ -17,12 +21,20 @@ interface Props {
 }
 
 const CardList = ({ items, deleteItem, updateItem }: Props) => {
-  const [idToDelete, setIdToDelete] = useState<null | number>(null);
+  const [idsToDelete, setIdsToDelete] = useState<null | number[]>(null);
   const [idToEdit, setIdToEdit] = useState<null | number>(null);
 
+  const {
+    data,
+    hasAll,
+    hasSome,
+    toggleAll,
+    toggle,
+  } = useTable<Item>({ initialData: items });
+
   const handleDeleteItem = () => {
-    deleteItem(idToDelete as number)
-    setIdToDelete(null);
+    idsToDelete?.forEach(deleteItem);
+    setIdsToDelete(null);
   };
 
   const handleOnExport = () => {
@@ -48,9 +60,60 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
     return null;
   }, [idToEdit, items]);
 
+  const setSelectedItemsToDelete = () => {
+    const ids = data
+      .filter(({ selected }) => selected)
+      .map(({ id }) => id);
+
+    setIdsToDelete(ids);
+  }
+
+  const selectedItems = useMemo(() => (
+    data.filter(({ selected }) => selected)
+  ), [data]);
+
   return (
     <div className="cardContainer">
-      <TableBuilder data={items}>
+      <ButtonGroup
+        disabled={!hasSome}
+        overrides={{ Root: { props: { className: "Table-buttonsAction" } } }}
+      >
+        <Button
+          onClick={setSelectedItemsToDelete}
+        >
+          Видалити виділені
+        </Button>
+
+        <DownloadPDFButton
+          items={selectedItems}
+          toReadyLabel="Підготувати виділені"
+          readyLabel="Завантажити виділені"
+        />
+
+      </ButtonGroup>
+
+      <TableBuilder data={data}>
+        <TableBuilderColumn<UseTableItemGeneric<Item>>
+          header={
+            <Checkbox
+              checked={hasAll}
+              isIndeterminate={!hasAll && hasSome}
+              onChange={toggleAll}
+              disabled={!data.length}
+            >
+              ({selectedItems.length})
+            </Checkbox>
+          }
+        >
+          {(row) => (
+            <Checkbox
+              id={row.id.toString()}
+              checked={Boolean(row.selected)}
+              onChange={toggle}
+            />
+          )}
+
+        </TableBuilderColumn>
         <TableBuilderColumn<Item> header="Назва товару">
           {(row) => row.name}
         </TableBuilderColumn>
@@ -71,34 +134,21 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
           {(row) => row.oldFullPrice && `${row.oldFullPrice}.${row.oldCentPrice}`}
         </TableBuilderColumn>
 
-        <TableBuilderColumn<Item>
-          header={(
-            <Button onClick={handleOnExport}>
-              Експорт
-            </Button>
-          )}
-        >
+        <TableBuilderColumn<Item>>
           {(row) => (
             <ButtonGroup>
-              <Button
-                onClick={() => setIdToEdit(row.id)}
-              >
-                Змінити
-              </Button>
-              <Button
-                onClick={() => setIdToDelete(row.id)}
-              >
-                Видалити
-              </Button>
+              <Button onClick={() => setIdToEdit(row.id)}>Змінити</Button>
+
+              <Button onClick={() => setIdsToDelete([row.id])}>Видалити</Button>
             </ButtonGroup>
           )}
         </TableBuilderColumn>
       </TableBuilder>
 
       <Modal
-        onClose={() => setIdToDelete(null)}
+        onClose={() => setIdsToDelete(null)}
         closeable
-        isOpen={Boolean(idToDelete)}
+        isOpen={Boolean(idsToDelete)}
         animate
         autoFocus
         size={SIZE.default}
@@ -109,7 +159,7 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
           <ModalButton kind={ButtonKind.tertiary} onClick={handleDeleteItem}>
             <span style={{ color: 'red' }}>Видалити</span>
           </ModalButton>
-          <ModalButton onClick={() => setIdToDelete(null)}>Відмінити</ModalButton>
+          <ModalButton onClick={() => setIdsToDelete(null)}>Відмінити</ModalButton>
         </ModalFooter>
       </Modal>
 

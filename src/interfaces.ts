@@ -1,4 +1,4 @@
-export interface Item { 
+export interface Item {
     name: string;
     description: string;
     fullPrice: string;
@@ -9,3 +9,10 @@ export interface Item {
     isDiscount: boolean;
     id: number;
 }
+
+export interface UseTableItemTemplate {
+    selected?: boolean;
+    id: number;
+}
+
+export type UseTableItemGeneric<T> = UseTableItemTemplate & T;
