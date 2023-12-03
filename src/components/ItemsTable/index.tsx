@@ -8,10 +8,13 @@ import { Item, UseTableItemGeneric } from "../../interfaces";
 import Form from "../Form";
 
 import { Checkbox } from "baseui/checkbox";
-import { useTable } from "../../hooks";
+import { useSearch, useTable } from "../../hooks";
 import DownloadPDFButton from "../DownloadPDFButton";
 
 import './styles.css';
+import { Input } from "baseui/input";
+import { Search } from "baseui/icon";
+import Highlighted from "../Highlighted";
 
 interface Props {
   items: Item[];
@@ -30,6 +33,12 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
     toggleAll,
     toggle,
   } = useTable<Item>({ initialData: items });
+
+  const {
+    searchValue,
+    setSearchValue,
+    data: filteredData,
+  } = useSearch({ items: data });
 
   const handleDeleteItem = () => {
     idsToDelete?.forEach(deleteItem);
@@ -83,7 +92,7 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
 
       </ButtonGroup>
 
-      <TableBuilder data={data}>
+      <TableBuilder data={filteredData}>
         <TableBuilderColumn<UseTableItemGeneric<Item>>
           header={
             <Checkbox
@@ -106,26 +115,46 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
 
         </TableBuilderColumn>
         <TableBuilderColumn<Item> header="Назва товару">
-          {(row) => row.name}
+          {(row) => (
+            <Highlighted searchValue={searchValue} value={row.name} />
+          )}
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Опис товару">
-          {(row) => row.description}
+          {(row) => (
+            <Highlighted searchValue={searchValue} value={row.description} />
+          )}
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Країна-виробник">
-          {(row) => row.country}
+          {(row) => (
+            <Highlighted searchValue={searchValue} value={row.country} />
+          )}
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Ціна">
-          {(row) => `${row.fullPrice}.${row.centPrice}`}
+          {(row) => (
+            <Highlighted searchValue={searchValue} value={`${row.fullPrice}.${row.centPrice}`} />
+          )}
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Стара ціна">
-          {(row) => row.oldFullPrice && `${row.oldFullPrice}.${row.oldCentPrice}`}
+          {(row) => (
+            <Highlighted searchValue={searchValue} value={row.oldFullPrice && `${row.oldFullPrice}.${row.oldCentPrice}`} />
+          )}
         </TableBuilderColumn>
 
-        <TableBuilderColumn<Item>>
+        <TableBuilderColumn<Item>
+          header={(
+            <Input
+              value={searchValue}
+              onChange={e => setSearchValue(e.target.value)}
+              placeholder="Controlled Input"
+              clearOnEscape
+              startEnhancer={<Search size="18px" />}
+            />
+          )}
+        >
           {(row) => (
             <ButtonGroup>
               <Button onClick={() => setIdToEdit(row.id)}>Змінити</Button>

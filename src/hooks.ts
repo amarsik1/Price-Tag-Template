@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState, useEffect, ChangeEvent } from "react";
+import { Dispatch, SetStateAction, useState, useEffect, ChangeEvent, useMemo } from "react";
 import { UseTableItemGeneric, UseTableItemTemplate } from "./interfaces";
 
 export const useLocalStorage = <S>(key: string, defaultValue: S):
@@ -69,3 +69,32 @@ export const useTable = <T extends UseTableItemTemplate>({
     hasSome,
   }
 };
+
+interface UseSearchProps<T> {
+  items: T[];
+}
+
+export const useSearch = <T extends object>({ items }: UseSearchProps<T>) => {
+  const [searchValue, setSearchValue] = useState('');
+
+  const filteredData = useMemo(() => {
+    if (!searchValue) return items;
+
+    const preparedValue = searchValue.toLowerCase();
+
+    const result = items.filter((data) => {
+      const values = Object.values(data).filter((v) => typeof v === 'string');
+
+      const isIncluded = values.some((v) => v.toLowerCase().includes(preparedValue));
+      return isIncluded;
+    });
+
+    return result;
+  }, [searchValue, items]);
+
+  return {
+    data: filteredData,
+    searchValue,
+    setSearchValue,
+  }
+}
