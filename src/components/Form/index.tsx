@@ -4,6 +4,7 @@ import { Button } from "baseui/button";
 import { Controller, useForm } from "react-hook-form";
 import { Checkbox } from "baseui/checkbox";
 
+import Stepper from "../Stepper";
 import { Item } from "../../interfaces";
 
 import './styles.css';
@@ -15,6 +16,7 @@ const defaultValues = {
   centPrice: '',
   country: '',
   isDiscount: false,
+  numberCopies: 1,
   oldFullPrice: '',
   oldCentPrice: '',
 };
@@ -56,7 +58,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
           rules={{ required: true }}
           control={control}
           render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-            <div>
+            <div className="form-inputContainer__name">
               <FormControl
                 label="Назва продукту"
               >
@@ -71,9 +73,24 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
           name="description"
           control={control}
           render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-            <div>
+            <div className="form-inputContainer__description">
               <FormControl
                 label="Опис продукту"
+              >
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+              </FormControl>
+            </div>
+          )}
+        />
+
+        <Controller
+          name="country"
+          rules={{ required: true }}
+          control={control}
+          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
+            <div className="form-inputContainer__country">
+              <FormControl
+                label="Країна"
               >
                 <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
               </FormControl>
@@ -86,7 +103,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
           name="fullPrice"
           control={control}
           render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-            <div>
+            <div className="form-inputContainer__fullPrice">
               <FormControl
                 label="Ціна (ціле число)"
                 caption="Тільки числа"
@@ -108,7 +125,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
           rules={{ required: true, maxLength: 2, pattern: /[0-9]{2}/ }}
           control={control}
           render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-            <div>
+            <div className="form-inputContainer__centPrice">
               <FormControl
                 label="Ціна (копійки)"
                 caption="Тільки два числа"
@@ -126,15 +143,16 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
         />
 
         <Controller
-          name="country"
-          rules={{ required: true }}
+          name="numberCopies"
           control={control}
-          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-            <div>
-              <FormControl
-                label="Країна"
-              >
-                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+          render={({ field: { value, onChange } }) => (
+            <div className="form-inputContainer__numberCopies">
+              <FormControl label="Кількість копій" caption="&nbsp;">
+                <Stepper
+                  minValue={1}
+                  value={value || 1}
+                  onChange={onChange}
+                />
               </FormControl>
             </div>
           )}
@@ -143,8 +161,8 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
         <Controller
           name="isDiscount"
           control={control}
-          render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-            <div>
+          render={({ field: { value, onChange, name } }) => (
+            <div className="form-inputContainer__isDiscount">
               <FormControl>
                 <Checkbox
                   id={name}
@@ -165,7 +183,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
               name="oldFullPrice"
               control={control}
               render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-                <div>
+                <div className="form-inputContainer__oldFullPrice">
                   <FormControl
                     label="Стара ціна (ціле число)"
                     caption="Тільки числа"
@@ -187,7 +205,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
               rules={{ required: true, maxLength: 2, pattern: /[0-9]{2}/ }}
               control={control}
               render={({ field: { value, onChange, name }, fieldState: { error } }) => (
-                <div>
+                <div className="form-inputContainer__oldCentPrice">
                   <FormControl
                     label="Стара ціна (копійки)"
                     caption="Тільки два числа"
