@@ -7,10 +7,10 @@ import {
 } from '@react-pdf/renderer';
 import moment from 'moment';
 
-import { Item } from '../../interfaces';
-import QRCode from '../QRCode';
-import { priceFormatter } from '../../formatters';
-import UAHSvg from '../UAHSvg';
+import { Item } from 'interfaces';
+import QRCode from 'components/QRCode';
+import { priceFormatter } from 'formatters';
+import UAHSvg from 'components/UAHSvg';
 
 import styles from './styles';
 
@@ -28,7 +28,9 @@ const Document = ({ items }: PDFComponent) => (
     <PDFDocument>
         <Page size="A4" style={styles.page}>
             <View style={styles.body}>
-                {items.map(({ name, description, fullPrice, centPrice, country, id, oldCentPrice, oldFullPrice, numberCopies }) => {
+                {items.map(({ name, description, country, id, price, oldPrice, numberCopies }) => {
+                    const [fullPrice, centPrice] = price.split('.');
+                    const [oldFullPrice, oldCentPrice] = oldPrice.split('.');
 
                     return Array(numberCopies).fill(0).map((_, i) => (
                         <View style={styles.card} key={id + i} wrap={false}>

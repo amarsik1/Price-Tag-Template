@@ -4,18 +4,17 @@ import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
 import * as XLSX from 'xlsx';
 import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
 import { ButtonGroup } from "baseui/button-group";
-
-import { Item, UseTableItemGeneric } from "../../interfaces";
-import Form from "../Form";
-
-import { Checkbox } from "baseui/checkbox";
-import { useSearch, useTable } from "../../hooks";
-import DownloadPDFButton from "../DownloadPDFButton";
-
-import './styles.css';
+import Form from "components/Form";
 import { Input } from "baseui/input";
 import { Search } from "baseui/icon";
-import Highlighted from "../Highlighted";
+import Highlighted from "components/Highlighted/Highlighted";
+import { Checkbox } from "baseui/checkbox";
+
+import { Item, UseTableItemGeneric } from "interfaces";
+import { useSearch, useTable } from "hooks";
+import DownloadPDFButton from "components/DownloadPDFButton";
+
+import './styles.css';
 
 interface Props {
   items: Item[];
@@ -143,13 +142,13 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
 
         <TableBuilderColumn<Item> header="Ціна">
           {(row) => (
-            <Highlighted searchValue={searchValue} value={`${row.fullPrice}.${row.centPrice}`} />
+            <Highlighted searchValue={searchValue} value={row.price} />
           )}
         </TableBuilderColumn>
 
         <TableBuilderColumn<Item> header="Стара ціна">
           {(row) => (
-            <Highlighted searchValue={searchValue} value={row.oldFullPrice && `${row.oldFullPrice}.${row.oldCentPrice}`} />
+            <Highlighted searchValue={searchValue} value={row.oldPrice} />
           )}
         </TableBuilderColumn>
 
