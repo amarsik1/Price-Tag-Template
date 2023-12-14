@@ -1,10 +1,9 @@
-
 interface Props {
   value: string;
   searchValue: string;
 }
 
-const Highlighted = ({ value, searchValue }: Props) => {
+const Highlighted = ({ value = '', searchValue }: Props) => {
   const firstIndex = value.toUpperCase().indexOf(searchValue.toUpperCase());
   if (firstIndex === -1) return <span>{value}</span>;
 
