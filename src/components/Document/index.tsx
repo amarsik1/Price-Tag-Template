@@ -38,7 +38,7 @@ const Document = ({ items }: PDFComponent) => (
                                     <Text style={styles.description}>{description}</Text>
                                     {Boolean(oldCentPrice) && (
                                         <View style={styles.discountLabel}>
-                                            <Text>Розпродаж!</Text>
+                                            <Text>Акція!</Text>
                                         </View>
                                     )}
                                 </View>
