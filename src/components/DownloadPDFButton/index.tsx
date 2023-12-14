@@ -4,7 +4,7 @@ import { Item } from "baseui/menu";
 import classNames from "classnames";
 import { useState } from "react";
 
-import Document from "../Document";
+import Document from "components/Document";
 
 interface Props {
   items: Item[];
