@@ -1,59 +1,37 @@
-import React, { useState } from 'react';
-import { PDFViewer } from '@react-pdf/renderer';
-import Document from './components/Document';
-import { Item } from './interfaces';
-import { useLocalStorage } from './hooks';
-import Header from './components/Header';
-import Form from './components/Form';
-import ItemsTable from './components/ItemsTable';
+import { Client as Styletron } from 'styletron-engine-atomic';
+import { Provider as StyletronProvider } from 'styletron-react';
 
-import './App.css';
+import HomePage from 'pages/HomePage';
+import { appDataContext, useProvideAppData } from 'context';
+import { Routes, Route } from 'react-router-dom';
+import PDFPreviewPage from 'pages/PDFPreviewPage';
+import LegacyItemsPage from 'pages/LegacyItemsPage';
+import Layout from 'components/Layout';
+import NotFoundPage from 'pages/NotFoundPage';
+
+const engine = new Styletron();
 
 const App = () => {
-  const [items, setItems] = useLocalStorage<Item[]>('items', []);
-  const [isPreview, setIsPreview] = useState(false);
-
-  const addItem = (newItem: Item) => {
-    setItems((prev) => prev.concat([newItem]))
-  }
-
-  const deleteItem = (id: number) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  }
-
-  const updateItem = (id: number, newData: Item) => {
-    setItems((prev) => prev.map((item) => item.id === id ? newData : item));
-  }
-
-  const toggleIsPreview = () => setIsPreview((prev) => !prev);
-
+  const value = useProvideAppData();
   return (
-    <div className='App'>
-      <Header items={items} isPreview={isPreview} toggleIsPreview={toggleIsPreview} />
+    <StyletronProvider value={engine}>
+      <appDataContext.Provider value={value}>
 
+        <Routes>
+          <Route path="/" element={<Layout />}>
+            <Route index element={<HomePage />} />
 
-      {isPreview ? (
-        <div className='pdf-preview'>
+            <Route path='/preview' element={<PDFPreviewPage />} />
 
-          <PDFViewer width="100%" height={"100%"}>
-            <Document items={items} />
-          </PDFViewer>
-        </div>
-      ) : (
-        <div className="content">
-          <div className="container">
-            <Form addItem={addItem} />
+          </Route>
 
-            <ItemsTable
-              items={items}
-              deleteItem={deleteItem}
-              updateItem={updateItem}
-            />
-          </div>
-        </div>
-      )}
-    </div>
-  )
+          <Route path="/legacy-items" element={<LegacyItemsPage />} />
+          <Route path="*" element={<NotFoundPage />} />
+        </Routes>
+
+      </appDataContext.Provider>
+    </StyletronProvider>
+  );
 };
 
 export default App;
