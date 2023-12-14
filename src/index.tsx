@@ -3,18 +3,15 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
-import { Client as Styletron } from 'styletron-engine-atomic';
-import { Provider as StyletronProvider } from 'styletron-react';
-
-const engine = new Styletron();
+import { BrowserRouter } from 'react-router-dom';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
 root.render(
-  <StyletronProvider value={engine}>
+  <BrowserRouter>
     <App />
-  </StyletronProvider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function

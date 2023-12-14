@@ -18,9 +18,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx"
+    "jsx": "react-jsx",
+    "baseUrl": "./src", // Adjust this to the base directory of your source files
+    "paths": {
+      "@/*": ["/*"] // This example assumes that your source files are organized in a flat structure under "src"
+    },
   },
   "include": [
-    "src"
+    "src/**/*"
   ]
 }
