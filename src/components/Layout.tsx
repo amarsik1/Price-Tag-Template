@@ -1,7 +1,8 @@
-import { Outlet, useNavigate } from "react-router-dom";
-import Header from "./Header";
-import { useAppData } from "context";
 import { useEffect } from "react";
+import { Outlet, useNavigate } from "react-router-dom";
+import { useAppData } from "context";
+
+import Header from "./Header";
 
 const Layout = () => {
   const { items } = useAppData();
@@ -11,9 +12,9 @@ const Layout = () => {
     const isSomeoneLegacy = (items as any[]).some(({ fullPrice }) => fullPrice);
     if (isSomeoneLegacy) {
       navigate('/legacy-items');
-      console.log('redirect');
     }
-  }, [items]);
+  }, [items, navigate]);
+
   return (
     <>
       <Header />
