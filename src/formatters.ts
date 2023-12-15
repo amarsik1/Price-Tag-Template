@@ -22,6 +22,8 @@ export const formatLegacyItems = (items: (LegacyItem & Item)[]): Promise<Item[]>
         oldFullPrice,
       } = item;
 
+      const oldPrice = (oldCentPrice && oldFullPrice) && `${oldFullPrice}.${oldCentPrice}`
+
       return {
         name,
         country,
@@ -29,7 +31,7 @@ export const formatLegacyItems = (items: (LegacyItem & Item)[]): Promise<Item[]>
         numberCopies,
         id,
         price: `${fullPrice}.${centPrice}`,
-        oldPrice: `${oldFullPrice}.${oldCentPrice}`,
+        oldPrice,
       };
     });
 
