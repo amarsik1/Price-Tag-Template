@@ -12,13 +12,11 @@ import DownloadPDFButton from "components/DownloadPDFButton";
 import { MobileHeader } from "baseui/mobile-header";
 import { useAppData } from "context";
 import { Menu } from 'baseui/icon';
-
-import './styles.css';
 import { useLocation } from "react-router-dom";
 
-interface Props { }
+import './styles.css';
 
-const Header = ({ }: Props) => {
+const Header = () => {
   const { items } = useAppData();
   const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);

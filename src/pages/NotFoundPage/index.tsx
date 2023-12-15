@@ -1,7 +1,7 @@
-import { Button } from 'baseui/button';
-import './styles.css';
-import { DisplayLarge, DisplayMedium } from 'baseui/typography';
+import { DisplayMedium } from 'baseui/typography';
 import { StyledLink } from 'baseui/link';
+
+import './styles.css';
 
 const NotFoundPage = () => {
   return (
