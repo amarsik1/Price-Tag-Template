@@ -4,31 +4,24 @@ import {
   StyledNavigationList,
   StyledNavigationItem
 } from "baseui/header-navigation";
-import {
-  Checkbox,
-  STYLE_TYPE,
-  LABEL_PLACEMENT
-} from "baseui/checkbox";
-
-import { MobileHeader } from "baseui/mobile-header";
-import { Menu } from 'baseui/icon';
-
-import { Item } from "../../interfaces";
-
-import './styles.css';
+import { StyledLink } from "baseui/link";
 import { Drawer } from "baseui/drawer";
 import { useState } from "react";
 import { ListItem, ListItemLabel } from "baseui/list";
-import DownloadPDFButton from "../DownloadPDFButton";
+import DownloadPDFButton from "components/DownloadPDFButton";
+import { MobileHeader } from "baseui/mobile-header";
+import { useAppData } from "context";
+import { Menu } from 'baseui/icon';
+import { useLocation } from "react-router-dom";
 
-interface Props {
-  items: Item[];
-  isPreview: boolean;
-  toggleIsPreview: () => void;
-}
+import './styles.css';
 
-const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
+const Header = () => {
+  const { items } = useAppData();
+  const location = useLocation();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const isPreviewPage = location.pathname === '/preview';
 
   if (window.innerWidth <= 600) {
 
@@ -51,18 +44,12 @@ const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
           onClose={() => setIsDrawerOpen(false)}
         >
           <ul className="drawer-container">
-            <ListItem
-              endEnhancer={() => (
-                <Checkbox
-                  checked={isPreview}
-                  checkmarkType={STYLE_TYPE.toggle_round}
-                  onChange={toggleIsPreview}
-                />
+            <ListItem>
+              {isPreviewPage ? (
+                <StyledLink href="/">До форми</StyledLink>
+              ) : (
+                <StyledLink href="/preview">Переглянути</StyledLink>
               )}
-            >
-              <ListItemLabel>
-                Переглянути
-              </ListItemLabel>
             </ListItem>
 
             <ListItem>
@@ -94,18 +81,11 @@ const Header = ({ items, isPreview, toggleIsPreview }: Props) => {
           {Boolean(items.length) && (
             <>
               <StyledNavigationItem>
-
-              </StyledNavigationItem>
-
-              <StyledNavigationItem>
-                <Checkbox
-                  checked={isPreview}
-                  checkmarkType={STYLE_TYPE.toggle_round}
-                  onChange={toggleIsPreview}
-                  labelPlacement={LABEL_PLACEMENT.right}
-                >
-                  Переглянути
-                </Checkbox>
+                {isPreviewPage ? (
+                  <StyledLink href="/">До форми</StyledLink>
+                ) : (
+                  <StyledLink href="/preview">Переглянути</StyledLink>
+                )}
               </StyledNavigationItem>
             </>
           )}

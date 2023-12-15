@@ -1,0 +1,1 @@
+export const priceRegExp = /^\d*(\.\d{0,2})?$/;
