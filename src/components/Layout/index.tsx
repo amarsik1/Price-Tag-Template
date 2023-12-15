@@ -2,7 +2,9 @@ import { useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { useAppData } from "context";
 
-import Header from "./Header";
+import Header from "components/Header";
+
+import './styles.css'
 
 const Layout = () => {
   const { items } = useAppData();
@@ -16,11 +18,11 @@ const Layout = () => {
   }, [items, navigate]);
 
   return (
-    <>
+    <div className="layout">
       <Header />
 
       <Outlet />
-    </>
+    </div>
   );
 };
 
