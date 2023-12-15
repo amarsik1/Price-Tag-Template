@@ -91,10 +91,10 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
           rules={{ required: true, pattern: priceRegExp }}
           name="price"
           control={control}
-          render={({ field: { value, onChange } }) => (
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
             <div className="form-inputContainer__price">
               <FormControl label="Ціна">
-                <PriceInput value={value} onChange={onChange} inputMode="numeric" />
+                <PriceInput value={value} error={!!error?.type} onChange={onChange} inputMode="numeric" />
               </FormControl>
             </div>
           )}
@@ -104,10 +104,10 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
           rules={{ pattern: priceRegExp }}
           name="oldPrice"
           control={control}
-          render={({ field: { value, onChange } }) => (
+          render={({ field: { value, onChange }, fieldState: { error } }) => (
             <div className="form-inputContainer__oldPrice">
               <FormControl label="Стара ціна">
-                <PriceInput value={value} onChange={onChange} inputMode="numeric" />
+                <PriceInput value={value} error={!!error?.type} onChange={onChange} inputMode="numeric" />
               </FormControl>
             </div>
           )}
