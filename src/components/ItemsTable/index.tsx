@@ -1,13 +1,19 @@
-import { useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { TableBuilder, TableBuilderColumn } from 'baseui/table-semantic';
 import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
+import * as XLSX from 'xlsx';
 import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
 import { ButtonGroup } from "baseui/button-group";
-import Form from "components/Form";
-import { Input } from "baseui/input";
-import { Search } from "baseui/icon";
-import Highlighted from "components/Highlighted/Highlighted";
 import { Checkbox } from "baseui/checkbox";
+import { Input } from "baseui/input";
+import { Block } from "baseui/block";
+import { StatefulPopover } from "baseui/popover";
+import { Search } from "baseui/icon";
+import moment from "moment";
+
+import { prepareItemsForExcelExport } from "formatters";
+import Form from "components/Form";
+import Highlighted from "components/Highlighted/Highlighted";
 
 import { Item, UseTableItemGeneric } from "interfaces";
 import { useSearch, useTable } from "hooks";
@@ -71,25 +77,51 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
     data.filter(({ selected }) => selected)
   ), [data]);
 
+  const handleOnExport = () => {
+    const preparedItems = prepareItemsForExcelExport(selectedItems);
+
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(preparedItems);
+
+    const listName = `Ціни товарів ${moment().format('(DD.MM.YYYY)')}`
+
+    XLSX.utils.book_append_sheet(wb, ws, listName);
+    XLSX.writeFile(wb, "MyExcel.xlsx")
+  };
+
   return (
     <div className="cardContainer">
-      <ButtonGroup
-        disabled={!hasSome}
-        overrides={{ Root: { props: { className: "Table-buttonsAction" } } }}
-      >
-        <Button
-          onClick={setSelectedItemsToDelete}
+
+      <div className="cardContainer-tableCtrl">
+        <StatefulPopover
+          content={() => (
+            <Block padding="20px">
+              <ButtonGroup
+                overrides={{ Root: { props: { className: "Table-buttonsAction" } } }}
+              >
+                <Button
+                  onClick={setSelectedItemsToDelete}
+                >
+                  Видалити виділені
+                </Button>
+
+                <DownloadPDFButton
+                  items={selectedItems}
+                  toReadyLabel="Підготувати виділені"
+                  readyLabel="Завантажити виділені"
+                />
+                <Button onClick={handleOnExport}>
+                  Експорт
+                </Button>
+              </ButtonGroup>
+            </Block>
+          )}
+          returnFocus
+          autoFocus
         >
-          Видалити виділені
-        </Button>
-
-        <DownloadPDFButton
-          items={selectedItems}
-          toReadyLabel="Підготувати виділені"
-          readyLabel="Завантажити виділені"
-        />
-
-      </ButtonGroup>
+          <Button disabled={!hasSome}>Дії</Button>
+        </StatefulPopover>
+      </div>
 
       <TableBuilder data={filteredData}>
         <TableBuilderColumn<UseTableItemGeneric<Item>>

@@ -1,6 +1,12 @@
 .cardContainer {
   margin-top: 50px;
 }
+
+.cardContainer-tableCtrl {
+  display: flex;
+  justify-content: flex-end;
+}
+
 .Table-buttonsAction {
   justify-content: flex-end;
   gap: 10px;
