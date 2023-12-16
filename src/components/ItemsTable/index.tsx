@@ -11,11 +11,12 @@ import { StatefulPopover } from "baseui/popover";
 import { Search } from "baseui/icon";
 import moment from "moment";
 
+import { prepareItemsForExcelExport } from "formatters";
 import Form from "components/Form";
 import Highlighted from "components/Highlighted/Highlighted";
+
 import { Item, UseTableItemGeneric } from "interfaces";
 import { useSearch, useTable } from "hooks";
-import { prepareItemsForExcelExport } from "formatters";
 import DownloadPDFButton from "components/DownloadPDFButton";
 
 import './styles.css';
