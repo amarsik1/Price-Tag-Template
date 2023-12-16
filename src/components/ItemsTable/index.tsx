@@ -4,7 +4,6 @@ import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
 import * as XLSX from 'xlsx';
 import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
 import { ButtonGroup } from "baseui/button-group";
-import * as XLSX from 'xlsx';
 import { Checkbox } from "baseui/checkbox";
 import { Input } from "baseui/input";
 import { Block } from "baseui/block";
@@ -48,14 +47,6 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
   const handleDeleteItem = () => {
     idsToDelete?.forEach(deleteItem);
     setIdsToDelete(null);
-  };
-
-  const handleOnExport = () => {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(items);
-
-    XLSX.utils.book_append_sheet(wb, ws, 'Ціни товарів');
-    XLSX.writeFile(wb, "MyExcel.xlsx")
   };
 
   const handleUpdateItem = (newData: Item) => {
