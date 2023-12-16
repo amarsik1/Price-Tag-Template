@@ -7,12 +7,16 @@ import { ButtonGroup } from "baseui/button-group";
 import * as XLSX from 'xlsx';
 import { Checkbox } from "baseui/checkbox";
 import { Input } from "baseui/input";
+import { Block } from "baseui/block";
+import { StatefulPopover } from "baseui/popover";
 import { Search } from "baseui/icon";
+import moment from "moment";
 
 import Form from "components/Form";
 import Highlighted from "components/Highlighted/Highlighted";
 import { Item, UseTableItemGeneric } from "interfaces";
 import { useSearch, useTable } from "hooks";
+import { prepareItemsForExcelExport } from "formatters";
 import DownloadPDFButton from "components/DownloadPDFButton";
 
 import './styles.css';
@@ -82,34 +86,50 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
   ), [data]);
 
   const handleOnExport = () => {
-    const wb = XLSX.utils.book_new();
-    const ws = XLSX.utils.json_to_sheet(items);
+    const preparedItems = prepareItemsForExcelExport(selectedItems);
 
-    XLSX.utils.book_append_sheet(wb, ws, 'Ціни товарів');
+    const wb = XLSX.utils.book_new();
+    const ws = XLSX.utils.json_to_sheet(preparedItems);
+
+    const listName = `Ціни товарів ${moment().format('(DD.MM.YYYY)')}`
+
+    XLSX.utils.book_append_sheet(wb, ws, listName);
     XLSX.writeFile(wb, "MyExcel.xlsx")
   };
 
   return (
     <div className="cardContainer">
-      <ButtonGroup
-        disabled={!hasSome}
-        overrides={{ Root: { props: { className: "Table-buttonsAction" } } }}
-      >
-        <Button
-          onClick={setSelectedItemsToDelete}
-        >
-          Видалити виділені
-        </Button>
 
-        <DownloadPDFButton
-          items={selectedItems}
-          toReadyLabel="Підготувати виділені"
-          readyLabel="Завантажити виділені"
-        />
-        <Button onClick={handleOnExport}>
-          Експорт
-        </Button>
-      </ButtonGroup>
+      <div className="cardContainer-tableCtrl">
+        <StatefulPopover
+          content={() => (
+            <Block padding="20px">
+              <ButtonGroup
+                overrides={{ Root: { props: { className: "Table-buttonsAction" } } }}
+              >
+                <Button
+                  onClick={setSelectedItemsToDelete}
+                >
+                  Видалити виділені
+                </Button>
+
+                <DownloadPDFButton
+                  items={selectedItems}
+                  toReadyLabel="Підготувати виділені"
+                  readyLabel="Завантажити виділені"
+                />
+                <Button onClick={handleOnExport}>
+                  Експорт
+                </Button>
+              </ButtonGroup>
+            </Block>
+          )}
+          returnFocus
+          autoFocus
+        >
+          <Button disabled={!hasSome}>Дії</Button>
+        </StatefulPopover>
+      </div>
 
       <TableBuilder data={filteredData}>
         <TableBuilderColumn<UseTableItemGeneric<Item>>

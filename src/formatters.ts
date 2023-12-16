@@ -1,4 +1,4 @@
-import { Item, LegacyItem } from "interfaces";
+import { Item, LegacyItem, UseTableItemGeneric } from "interfaces";
 
 export const priceFormatter = (price: string): string => {
   return price.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -37,4 +37,10 @@ export const formatLegacyItems = (items: (LegacyItem & Item)[]): Promise<Item[]>
 
     resolve(result);
   })
-}
+};
+
+export const prepareItemsForExcelExport = (items: UseTableItemGeneric<Item>[]): Omit<Item, 'id'>[] => {
+  const result = items.map(({ selected, id, ...rest }) => rest);
+
+  return result;
+};
