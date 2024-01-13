@@ -1,5 +1,5 @@
 import React, { ChangeEvent, FocusEvent } from 'react';
-import { Input, InputProps } from "baseui/input";
+import { Input, InputProps } from 'baseui/input';
 import { priceRegExp } from 'appConstants';
 
 interface PriceInputProps extends Omit<InputProps, 'onChange'> {
@@ -33,7 +33,7 @@ const PriceInput: React.FC<PriceInputProps> = ({ id, value, onChange, onBlur, ..
       overrides={{
         Input: {
           props: {
-            'data-testid': id
+            'data-testid': id,
           },
         },
       }}

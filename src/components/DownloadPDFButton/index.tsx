@@ -1,10 +1,10 @@
-import { PDFDownloadLink } from "@react-pdf/renderer";
-import { Button } from "baseui/button";
-import { Item } from "baseui/menu";
-import classNames from "classnames";
-import { useState } from "react";
+import { PDFDownloadLink } from '@react-pdf/renderer';
+import { Button } from 'baseui/button';
+import { Item } from 'baseui/menu';
+import classNames from 'classnames';
+import { useState } from 'react';
 
-import Document from "components/Document";
+import PriceTagTemplate from 'components/PriceTagTemplate';
 
 interface Props {
   items: Item[];
@@ -15,8 +15,8 @@ interface Props {
 const DownloadPDFButton = ({
   items,
   readyLabel,
-  waitingLabel = "Файл завантажується",
-  toReadyLabel = "Підготувати файл",
+  waitingLabel = 'Файл завантажується',
+  toReadyLabel = 'Підготувати файл',
 }: Props) => {
   const [preparedItems, setPreparedItems] = useState<Item[]>([]);
 
@@ -28,8 +28,8 @@ const DownloadPDFButton = ({
     <>
       {isEqual ? (
         <PDFDownloadLink
-          className={classNames("downloadBtn", { disabled: !items.length })}
-          document={<Document items={preparedItems} />}
+          className={classNames('downloadBtn', { disabled: !items.length })}
+          document={<PriceTagTemplate items={preparedItems} />}
           onClick={handleDownloadFile}
         >
           {({ loading }) => (loading ? waitingLabel : readyLabel)}
@@ -41,7 +41,7 @@ const DownloadPDFButton = ({
         </Button>
       )}
     </>
-  )
-}
+  );
+};
 
 export default DownloadPDFButton;

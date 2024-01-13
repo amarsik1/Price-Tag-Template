@@ -1,7 +1,7 @@
-import { Item, LegacyItem, UseTableItemGeneric } from "interfaces";
+import { Item, LegacyItem, UseTableItemGeneric } from 'interfaces';
 
 export const priceFormatter = (price: string): string => {
-  return price.replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+  return price.replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
 };
 
 export const formatLegacyItems = (items: (LegacyItem & Item)[]): Promise<Item[]> => {
@@ -22,7 +22,7 @@ export const formatLegacyItems = (items: (LegacyItem & Item)[]): Promise<Item[]>
         oldFullPrice,
       } = item;
 
-      const oldPrice = (oldCentPrice && oldFullPrice) && `${oldFullPrice}.${oldCentPrice}`
+      const oldPrice = (oldCentPrice && oldFullPrice) && `${oldFullPrice}.${oldCentPrice}`;
 
       return {
         name,
@@ -36,7 +36,7 @@ export const formatLegacyItems = (items: (LegacyItem & Item)[]): Promise<Item[]>
     });
 
     resolve(result);
-  })
+  });
 };
 
 export const prepareItemsForExcelExport = (items: UseTableItemGeneric<Item>[]): Omit<Item, 'id'>[] => {

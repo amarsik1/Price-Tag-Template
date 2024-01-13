@@ -1,12 +1,12 @@
-import { FormControl } from "baseui/form-control";
-import { Input } from "baseui/input";
-import { Button } from "baseui/button";
-import { Controller, useForm } from "react-hook-form";
+import { FormControl } from 'baseui/form-control';
+import { Input } from 'baseui/input';
+import { Button } from 'baseui/button';
+import { Controller, useForm } from 'react-hook-form';
 
-import Stepper from "components/Stepper";
-import { Item } from "interfaces";
-import PriceInput from "components/PriceInput";
-import { priceRegExp } from "appConstants";
+import Stepper from 'components/Stepper';
+import { Item } from 'interfaces';
+import PriceInput from 'components/PriceInput';
+import { priceRegExp } from 'appConstants';
 
 import './styles.css';
 
@@ -36,7 +36,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
   const onSubmit = (data: FormValues) => {
     addItem({ ...data, id: Date.now() });
     reset();
-  }
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="form">
@@ -51,7 +51,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
               <FormControl
                 label="Назва продукту"
               >
-                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target }) => onChange(target.value)} />
               </FormControl>
             </div>
           )}
@@ -66,7 +66,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
               <FormControl
                 label="Опис продукту"
               >
-                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target }) => onChange(target.value)} />
               </FormControl>
             </div>
           )}
@@ -81,7 +81,7 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
               <FormControl
                 label="Країна"
               >
-                <Input id={name} error={!!error?.type} value={value} onChange={({ target: { value } }) => onChange(value)} />
+                <Input id={name} error={!!error?.type} value={value} onChange={({ target }) => onChange(target.value)} />
               </FormControl>
             </div>
           )}
@@ -131,10 +131,10 @@ const Form = ({ addItem, values = defaultValues }: Props) => {
       </div>
 
       <Button className="form-submitBtn" type="submit">
-        {values?.name ? "Зберегти" : "Додати товар"}
+        {values?.name ? 'Зберегти' : 'Додати товар'}
       </Button>
     </form>
-  )
-}
+  );
+};
 
 export default Form;

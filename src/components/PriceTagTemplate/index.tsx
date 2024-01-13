@@ -1,9 +1,9 @@
 import {
-    Document as PDFDocument,
-    Page,
-    View,
-    Font,
-    Text,
+  Document as PDFDocument,
+  Page,
+  View,
+  Font,
+  Text as PDFText,
 } from '@react-pdf/renderer';
 import moment from 'moment';
 
@@ -15,45 +15,45 @@ import UAHSvg from 'components/UAHSvg';
 import styles from './styles';
 
 Font.register({
-    family: "Roboto",
-    src:
-        "https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf"
+  family: 'Roboto',
+  src:
+        'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf',
 });
 
 interface PDFComponent {
-    items: Item[];
+  items: Item[];
 }
 
-const Document = ({ items }: PDFComponent) => (
+const PriceTagTemplate = ({ items }: PDFComponent) => (
     <PDFDocument>
         <Page size="A4" style={styles.page}>
             <View style={styles.body}>
                 {items.map(({ name, description, country, id, price, oldPrice, numberCopies }) => {
-                    const [fullPrice, centPrice] = price.split('.');
-                    const [oldFullPrice, oldCentPrice] = oldPrice.split('.');
+                  const [fullPrice, centPrice] = price.split('.');
+                  const [oldFullPrice, oldCentPrice] = oldPrice.split('.');
 
-                    return Array(numberCopies).fill(0).map((_, i) => (
+                  return Array(numberCopies).fill(0).map((_, i) => (
                         <View style={styles.card} key={id + i} wrap={false}>
                             <View style={styles.header}>
                                 <View style={styles.headerLeft}>
-                                    <Text style={styles.title}>{name}</Text>
-                                    <Text style={styles.description}>{description}</Text>
+                                    <PDFText style={styles.title}>{name}</PDFText>
+                                    <PDFText style={styles.description}>{description}</PDFText>
                                     {Boolean(oldCentPrice) && (
                                         <View style={styles.discountLabel}>
-                                            <Text>Акція!</Text>
+                                            <PDFText>Акція!</PDFText>
                                         </View>
                                     )}
                                 </View>
 
                                 <View>
-                                    <Text style={styles.date}>{moment(id).format('DD.MM.YYYY')}</Text>
+                                    <PDFText style={styles.date}>{moment(id).format('DD.MM.YYYY')}</PDFText>
                                     {oldFullPrice && oldCentPrice && (
                                         <>
-                                            <Text style={styles.oldPriceLabel}>Стара ціна:</Text>
+                                            <PDFText style={styles.oldPriceLabel}>Стара ціна:</PDFText>
                                             <View style={styles.priceContainer}>
-                                                <Text style={styles.oldFullPrice}>{priceFormatter(oldFullPrice)}</Text>
+                                                <PDFText style={styles.oldFullPrice}>{priceFormatter(oldFullPrice)}</PDFText>
                                                 <View>
-                                                    <Text style={styles.oldCentPrice}>{oldCentPrice}</Text>
+                                                    <PDFText style={styles.oldCentPrice}>{oldCentPrice}</PDFText>
                                                     <UAHSvg style={styles.oldCurrencySymbol} />
                                                 </View>
                                                 <View style={styles.redLine}></View>
@@ -72,38 +72,38 @@ const Document = ({ items }: PDFComponent) => (
                                 <View style={styles.footerRight}>
 
                                     <View style={styles.priceContainer}>
-                                        <Text
+                                        <PDFText
                                             style={{
-                                                ...styles.fullPrice,
-                                                color: oldCentPrice ? 'red' : 'black',
+                                              ...styles.fullPrice,
+                                              color: oldCentPrice ? 'red' : 'black',
                                             }}
                                         >
                                             {priceFormatter(fullPrice)}
-                                        </Text>
+                                        </PDFText>
 
                                         <View>
-                                            <Text
+                                            <PDFText
                                                 style={{
-                                                    ...styles.centPrice,
-                                                    color: oldCentPrice ? 'red' : 'black',
+                                                  ...styles.centPrice,
+                                                  color: oldCentPrice ? 'red' : 'black',
                                                 }}
                                             >
                                                 {centPrice}
-                                            </Text>
+                                            </PDFText>
                                             <UAHSvg style={styles.currencySymbol} fillColor={oldCentPrice ? 'red' : 'black'} />
                                         </View>
                                     </View>
-                                    <Text style={styles.pricePerItemLabel}>Ціна за 1 шт.</Text>
-                                    <Text style={styles.country}>{country}</Text>
-                                    <Text style={styles.companyName}>PREMIUM ALCOHOL</Text>
+                                    <PDFText style={styles.pricePerItemLabel}>Ціна за 1 шт.</PDFText>
+                                    <PDFText style={styles.country}>{country}</PDFText>
+                                    <PDFText style={styles.companyName}>PREMIUM ALCOHOL</PDFText>
                                 </View>
                             </View>
                         </View>
-                    ));
+                  ));
                 })}
             </View>
         </Page>
     </PDFDocument>
 );
 
-export default Document;
+export default PriceTagTemplate;

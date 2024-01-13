@@ -30,6 +30,6 @@ const LegacyItemsPage = () => {
       <Button isLoading={isLoading} onClick={formatItems}>Оновити</Button>
     </div>
   );
-}
+};
 
 export default LegacyItemsPage;

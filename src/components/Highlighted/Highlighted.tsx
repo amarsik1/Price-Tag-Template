@@ -19,7 +19,7 @@ const Highlighted = ({ value = '', searchValue }: Props) => {
       <span className="highlighted">{founded}</span>
       <span>{lastPart}</span>
     </>
-  )
-}
+  );
+};
 
 export default Highlighted;
