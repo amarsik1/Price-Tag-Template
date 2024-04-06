@@ -1,7 +1,3 @@
-.cardContainer {
-  margin-top: 50px;
-}
-
 .cardContainer-tableCtrl {
   display: flex;
   justify-content: flex-end;

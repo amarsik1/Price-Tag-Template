@@ -1,0 +1,9 @@
+.settingsPage {
+  padding: 10px;
+}
+
+.settingsPage_formWrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(200px, 400px));
+  gap: 10px 30px;
+}

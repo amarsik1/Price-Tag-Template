@@ -3,12 +3,13 @@ import { Provider as StyletronProvider } from 'styletron-react';
 import { BaseProvider, LightTheme } from 'baseui';
 import { Routes, Route } from 'react-router-dom';
 
-import HomePage from 'pages/HomePage';
-import { appDataContext, useProvideAppData } from 'context';
-import PDFPreviewPage from 'pages/PDFPreviewPage';
-import LegacyItemsPage from 'pages/LegacyItemsPage';
 import Layout from 'components/Layout';
+import { appDataContext, useProvideAppData } from 'context';
+
+import HomePage from 'pages/HomePage';
+import PDFPreviewPage from 'pages/PDFPreviewPage';
 import NotFoundPage from 'pages/NotFoundPage';
+import SettingsPage from 'pages/SettingsPage';
 
 const engine = new Styletron();
 
@@ -24,11 +25,10 @@ const App = () => {
               <Route index element={<HomePage />} />
 
               <Route path='/preview' element={<PDFPreviewPage />} />
+              <Route path='/settings' element={<SettingsPage />} />
 
+              <Route path="*" element={<NotFoundPage />} />
             </Route>
-
-            <Route path="/legacy-items" element={<LegacyItemsPage />} />
-            <Route path="*" element={<NotFoundPage />} />
           </Routes>
 
         </appDataContext.Provider>

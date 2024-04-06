@@ -1,109 +1,140 @@
-import {
-  Document as PDFDocument,
-  Page,
-  View,
-  Font,
-  Text as PDFText,
-} from '@react-pdf/renderer';
+import { Document, Page, View, Font, Text } from '@react-pdf/renderer';
 import moment from 'moment';
 
-import { Item } from 'interfaces';
-import QRCode from 'components/QRCode';
+import QRGenerator from 'components/QRGenerator';
+import { Item, TagConfig } from 'interfaces';
 import { priceFormatter } from 'formatters';
-import UAHSvg from 'components/UAHSvg';
+
+import RF from 'assets/fonts/Roboto-Medium.ttf';
+import MF from 'assets/fonts/Montserrat-Medium.ttf';
 
 import styles from './styles';
 
-Font.register({
-  family: 'Roboto',
-  src:
-        'https://cdnjs.cloudflare.com/ajax/libs/ink/3.1.10/fonts/Roboto/roboto-medium-webfont.ttf',
-});
+Font.register({ family: 'Montserrat', src: MF });
+Font.register({ family: 'Roboto', src: RF });
 
 interface PDFComponent {
   items: Item[];
+  storeUrl: TagConfig['storeUrl'];
+  currencySymbol: TagConfig['currencySymbol'];
+  storeName: TagConfig['storeName'];
+  discountLabel: TagConfig['discountLabel'];
 }
 
-const PriceTagTemplate = ({ items }: PDFComponent) => (
-    <PDFDocument>
-        <Page size="A4" style={styles.page}>
-            <View style={styles.body}>
-                {items.map(({ name, description, country, id, price, oldPrice, numberCopies }) => {
-                  const [fullPrice, centPrice] = price.split('.');
-                  const [oldFullPrice, oldCentPrice] = oldPrice.split('.');
+const PriceTagTemplate = ({ items, storeUrl, currencySymbol, storeName, discountLabel }: PDFComponent) => {
 
-                  return Array(numberCopies).fill(0).map((_, i) => (
-                        <View style={styles.card} key={id + i} wrap={false}>
-                            <View style={styles.header}>
-                                <View style={styles.headerLeft}>
-                                    <PDFText style={styles.title}>{name}</PDFText>
-                                    <PDFText style={styles.description}>{description}</PDFText>
-                                    {Boolean(oldCentPrice) && (
-                                        <View style={styles.discountLabel}>
-                                            <PDFText>Акція!</PDFText>
-                                        </View>
-                                    )}
-                                </View>
+  return (
+    <Document>
+      <Page size="A4" style={styles.page}>
+        <View style={styles.body}>
+          {items.map(
+            ({
+              name,
+              description,
+              country,
+              id,
+              price,
+              oldPrice,
+              numberCopies,
+            }) => {
+              const [fullPrice, centPrice] = price.split('.');
+              const [oldFullPrice, oldCentPrice] = oldPrice.split('.');
 
-                                <View>
-                                    <PDFText style={styles.date}>{moment(id).format('DD.MM.YYYY')}</PDFText>
-                                    {oldFullPrice && oldCentPrice && (
-                                        <>
-                                            <PDFText style={styles.oldPriceLabel}>Стара ціна:</PDFText>
-                                            <View style={styles.priceContainer}>
-                                                <PDFText style={styles.oldFullPrice}>{priceFormatter(oldFullPrice)}</PDFText>
-                                                <View>
-                                                    <PDFText style={styles.oldCentPrice}>{oldCentPrice}</PDFText>
-                                                    <UAHSvg style={styles.oldCurrencySymbol} />
-                                                </View>
-                                                <View style={styles.redLine}></View>
-                                            </View>
-                                        </>
-                                    )}
-                                </View>
+              return Array(numberCopies)
+                .fill(0)
+                .map((_, i) => (
+                  <View style={styles.card} key={id + i} wrap={false}>
+                    <View style={styles.header}>
+                      <View style={styles.headerLeft}>
+                        <Text style={styles.title}>{name}</Text>
+                        <Text style={styles.description}>{description}</Text>
+                        {Boolean(oldCentPrice) && discountLabel && (
+                          <View style={styles.discountLabel}>
+                            <Text>{discountLabel}</Text>
+                          </View>
+                        )}
+                      </View>
+
+                      <View>
+                        <Text style={styles.date}>
+                          {moment(id).format('DD.MM.YYYY')}
+                        </Text>
+
+                        {oldFullPrice && oldCentPrice && (
+                          <>
+                            <Text style={styles.oldPriceLabel}>
+                              Стара ціна:
+                            </Text>
+                            <View style={styles.priceContainer}>
+                              <Text style={styles.oldFullPrice}>
+                                {priceFormatter(oldFullPrice)}
+                              </Text>
+                              <View style={styles.priceRightSide}>
+                                <Text style={styles.oldCentPrice}>
+                                  {oldCentPrice}
+                                </Text>
+                                <Text style={styles.oldCurrencySymbol}>{currencySymbol}</Text>
+                              </View>
+                              <View style={styles.redLine}></View>
                             </View>
+                          </>
+                        )}
+                      </View>
+                    </View>
 
+                    <View style={styles.footer}>
+                      <View style={styles.qrCode}>
+                        {storeUrl && (
+                          <QRGenerator url={storeUrl} />
+                        )}
+                      </View>
 
-                            <View style={styles.footer}>
-                                <View style={styles.qrCode}>
-                                    <QRCode />
-                                </View>
+                      <View style={styles.footerRight}>
+                        <View style={styles.priceContainer}>
+                          <Text
+                            style={{
+                              ...styles.fullPrice,
+                              color: oldCentPrice ? 'red' : 'black',
+                            }}
+                          >
+                            {priceFormatter(fullPrice)}
+                          </Text>
 
-                                <View style={styles.footerRight}>
+                          <View>
+                            <Text
+                              style={{
+                                ...styles.centPrice,
+                                color: oldCentPrice ? 'red' : 'black',
+                              }}
+                            >
+                              {centPrice}
+                            </Text>
 
-                                    <View style={styles.priceContainer}>
-                                        <PDFText
-                                            style={{
-                                              ...styles.fullPrice,
-                                              color: oldCentPrice ? 'red' : 'black',
-                                            }}
-                                        >
-                                            {priceFormatter(fullPrice)}
-                                        </PDFText>
-
-                                        <View>
-                                            <PDFText
-                                                style={{
-                                                  ...styles.centPrice,
-                                                  color: oldCentPrice ? 'red' : 'black',
-                                                }}
-                                            >
-                                                {centPrice}
-                                            </PDFText>
-                                            <UAHSvg style={styles.currencySymbol} fillColor={oldCentPrice ? 'red' : 'black'} />
-                                        </View>
-                                    </View>
-                                    <PDFText style={styles.pricePerItemLabel}>Ціна за 1 шт.</PDFText>
-                                    <PDFText style={styles.country}>{country}</PDFText>
-                                    <PDFText style={styles.companyName}>PREMIUM ALCOHOL</PDFText>
-                                </View>
-                            </View>
+                            <Text
+                              style={{
+                                ...styles.currencySymbol,
+                                color: oldCentPrice ? 'red' : 'black',
+                              }}
+                            >
+                              {currencySymbol}
+                            </Text>
+                          </View>
                         </View>
-                  ));
-                })}
-            </View>
-        </Page>
-    </PDFDocument>
-);
+                        <Text style={styles.pricePerItemLabel}>
+                          Ціна за 1 шт.
+                        </Text>
+                        <Text style={styles.country}>{country}</Text>
+                        <Text style={styles.companyName}>{storeName}</Text>
+                      </View>
+                    </View>
+                  </View>
+                ));
+            },
+          )}
+        </View>
+      </Page>
+    </Document>
+  );
+};
 
 export default PriceTagTemplate;

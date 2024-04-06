@@ -30,7 +30,25 @@ export interface UseTableItemTemplate {
 
 export type UseTableItemGeneric<T> = UseTableItemTemplate & T;
 
-export interface ContextValue {
+export interface ContextValue extends TagConfig {
   items: Item[];
-  setItems: Dispatch<SetStateAction<Item[]>>
+  setItems: Dispatch<SetStateAction<Item[]>>;
+  setCurrencySymbol: Dispatch<SetStateAction<TagConfig['currencySymbol']>>;
+  setStoreName: Dispatch<SetStateAction<TagConfig['storeName']>>;
+  setDiscountLabel: Dispatch<SetStateAction<TagConfig['discountLabel']>>;
+  setStoreUrl: Dispatch<SetStateAction<TagConfig['storeUrl']>>;
+}
+
+export enum CurrencySymbol {
+  UAH = '₴',
+  USD = '$',
+  EUR = '€',
+}
+
+export interface TagConfig {
+  currencySymbol: CurrencySymbol;
+  storeName: string;
+  storeUrl: string;
+  discountLabel: string;
+  // unit: string; // шт / л / кг
 }
