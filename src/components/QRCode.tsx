@@ -1,4 +1,4 @@
-import { Svg, G, Path } from "@react-pdf/renderer";
+import { Svg, G, Path } from '@react-pdf/renderer';
 
 const QRCode = () => {
 
@@ -479,6 +479,6 @@ const QRCode = () => {
 
     </Svg>
   );
-}
+};
 
 export default QRCode;

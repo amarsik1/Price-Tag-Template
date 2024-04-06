@@ -1,5 +1,5 @@
-import { Svg, Path } from "@react-pdf/renderer";
-import { Style } from "@react-pdf/types";
+import { Svg, Path } from '@react-pdf/renderer';
+import { Style } from '@react-pdf/types';
 
 interface Props {
   style: Style;
@@ -17,7 +17,7 @@ const UAHSvg = ({ style, fillColor = 'black' }: Props) => {
           L31.4,85.8c30.3-48.1,79.4-72.1,132.7-72.1c72.1,0,119.1,37.6,119.1,88.8c0,18.8-6.3,37.6-16.7,51.2h55.4v43.9H226.8z"
       />
     </Svg>
-  )
-}
+  );
+};
 
 export default UAHSvg;

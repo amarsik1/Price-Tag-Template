@@ -9,16 +9,16 @@ const HomePage = () => {
   const { items, setItems } = useAppData();
 
   const addItem = (newItem: Item) => {
-    setItems((prev) => prev.concat([newItem]))
-  }
+    setItems((prev) => prev.concat([newItem]));
+  };
 
   const deleteItem = (id: number) => {
     setItems((prev) => prev.filter((item) => item.id !== id));
-  }
+  };
 
   const updateItem = (id: number, newData: Item) => {
     setItems((prev) => prev.map((item) => item.id === id ? newData : item));
-  }
+  };
 
   return (
     <div className='HomePage content'>
@@ -32,7 +32,7 @@ const HomePage = () => {
         />
       </div>
     </div>
-  )
+  );
 };
 
 export default HomePage;

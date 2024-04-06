@@ -1,4 +1,4 @@
-import { Button, KIND, SHAPE } from "baseui/button";
+import { Button, KIND, SHAPE } from 'baseui/button';
 import { ParagraphMedium } from 'baseui/typography';
 
 import './styles.css';
@@ -37,7 +37,7 @@ const Stepper = ({
         +
       </Button>
     </div>
-  )
+  );
 };
 
 export default Stepper;

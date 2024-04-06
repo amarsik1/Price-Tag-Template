@@ -1,6 +1,6 @@
-import { createContext, useContext } from "react";
-import { ContextValue, Item } from "interfaces";
-import { useLocalStorage } from "hooks";
+import { createContext, useContext } from 'react';
+import { ContextValue, Item } from 'interfaces';
+import { useLocalStorage } from 'hooks';
 
 export const appDataContext = createContext<ContextValue>({} as ContextValue);
 

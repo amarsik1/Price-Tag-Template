@@ -12,6 +12,6 @@ const NotFoundPage = () => {
       </StyledLink>
     </div>
   );
-}
+};
 
 export default NotFoundPage;

@@ -1,10 +1,10 @@
-import { useEffect } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
-import { useAppData } from "context";
+import { useEffect } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
+import { useAppData } from 'context';
 
-import Header from "components/Header";
+import Header from 'components/Header';
 
-import './styles.css'
+import './styles.css';
 
 const Layout = () => {
   const { items } = useAppData();

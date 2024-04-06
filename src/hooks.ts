@@ -1,8 +1,8 @@
-import { Dispatch, SetStateAction, useState, useEffect, ChangeEvent, useMemo } from "react";
-import { UseTableItemGeneric, UseTableItemTemplate } from "./interfaces";
+import { Dispatch, SetStateAction, useState, useEffect, ChangeEvent, useMemo } from 'react';
+import { UseTableItemGeneric, UseTableItemTemplate } from './interfaces';
 
 export const useLocalStorage = <S>(key: string, defaultValue: S):
-  [S, Dispatch<SetStateAction<S>>] => {
+[S, Dispatch<SetStateAction<S>>] => {
   const [value, setValue] = useState<S>(() => {
     const storageValue = localStorage.getItem(key);
 
@@ -35,15 +35,15 @@ export const useTable = <T extends UseTableItemTemplate>({
 }: UseTableProps<T>): UseTableReturn<T> => {
   const [data, setData] = useState(initialData);
 
-  useEffect(() => { setData(initialData) }, [initialData]);
+  useEffect(() => { setData(initialData); }, [initialData]);
 
   const hasAny = Boolean(data.length);
   const hasAll = hasAny && data.every((x) => Boolean(x.selected));
   const hasSome = hasAny && data.some((x) => Boolean(x.selected));
 
   const toggleAll = () => {
-    setData((data) =>
-      data.map((row) => ({
+    setData((prevData) =>
+      prevData.map((row) => ({
         ...row,
         selected: !hasAll,
       })),
@@ -53,8 +53,8 @@ export const useTable = <T extends UseTableItemTemplate>({
   const toggle = (event: ChangeEvent<HTMLInputElement>) => {
     const { id, checked } = event.currentTarget;
 
-    setData((data) =>
-      data.map((row) => ({
+    setData((prevData) =>
+      prevData.map((row) => ({
         ...row,
         selected: String(row.id) === id ? checked : row.selected,
       })),
@@ -67,7 +67,7 @@ export const useTable = <T extends UseTableItemTemplate>({
     data,
     hasAll,
     hasSome,
-  }
+  };
 };
 
 interface UseSearchProps<T> {
@@ -96,5 +96,5 @@ export const useSearch = <T extends object>({ items }: UseSearchProps<T>) => {
     data: filteredData,
     searchValue,
     setSearchValue,
-  }
-}
+  };
+};

@@ -2,17 +2,17 @@ import {
   HeaderNavigation,
   ALIGN,
   StyledNavigationList,
-  StyledNavigationItem
-} from "baseui/header-navigation";
-import { StyledLink } from "baseui/link";
-import { Drawer } from "baseui/drawer";
-import { useState } from "react";
-import { ListItem, ListItemLabel } from "baseui/list";
-import DownloadPDFButton from "components/DownloadPDFButton";
-import { MobileHeader } from "baseui/mobile-header";
-import { useAppData } from "context";
+  StyledNavigationItem,
+} from 'baseui/header-navigation';
+import { StyledLink } from 'baseui/link';
+import { Drawer } from 'baseui/drawer';
+import { useState } from 'react';
+import { ListItem, ListItemLabel } from 'baseui/list';
+import DownloadPDFButton from 'components/DownloadPDFButton';
+import { MobileHeader } from 'baseui/mobile-header';
+import { useAppData } from 'context';
 import { Menu } from 'baseui/icon';
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
 import './styles.css';
 
@@ -33,8 +33,8 @@ const Header = () => {
             {
               renderIcon: Menu,
               onClick: () => setIsDrawerOpen(true),
-              label: "Меню"
-            }
+              label: 'Меню',
+            },
           ]}
         />
 
@@ -99,7 +99,7 @@ const Header = () => {
         </StyledNavigationList>
       </HeaderNavigation>
     </header>
-  )
+  );
 };
 
 export default Header;

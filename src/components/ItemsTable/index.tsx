@@ -1,23 +1,23 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 import { TableBuilder, TableBuilderColumn } from 'baseui/table-semantic';
-import { Button, SIZE, KIND as ButtonKind } from "baseui/button";
+import { Button, SIZE, KIND as ButtonKind } from 'baseui/button';
 import * as XLSX from 'xlsx';
-import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from "baseui/modal";
-import { ButtonGroup } from "baseui/button-group";
-import { Checkbox } from "baseui/checkbox";
-import { Input } from "baseui/input";
-import { Block } from "baseui/block";
-import { StatefulPopover } from "baseui/popover";
-import { Search } from "baseui/icon";
-import moment from "moment";
+import { Modal, ROLE, ModalHeader, ModalFooter, ModalButton, ModalBody } from 'baseui/modal';
+import { ButtonGroup } from 'baseui/button-group';
+import { Checkbox } from 'baseui/checkbox';
+import { Input } from 'baseui/input';
+import { Block } from 'baseui/block';
+import { StatefulPopover } from 'baseui/popover';
+import { Search } from 'baseui/icon';
+import moment from 'moment';
 
-import { prepareItemsForExcelExport } from "formatters";
-import Form from "components/Form";
-import Highlighted from "components/Highlighted/Highlighted";
+import { prepareItemsForExcelExport } from 'formatters';
+import Form from 'components/Form';
+import Highlighted from 'components/Highlighted/Highlighted';
 
-import { Item, UseTableItemGeneric } from "interfaces";
-import { useSearch, useTable } from "hooks";
-import DownloadPDFButton from "components/DownloadPDFButton";
+import { Item, UseTableItemGeneric } from 'interfaces';
+import { useSearch, useTable } from 'hooks';
+import DownloadPDFButton from 'components/DownloadPDFButton';
 
 import './styles.css';
 
@@ -71,7 +71,7 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
       .map(({ id }) => id);
 
     setIdsToDelete(ids);
-  }
+  };
 
   const selectedItems = useMemo(() => (
     data.filter(({ selected }) => selected)
@@ -83,10 +83,10 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
     const wb = XLSX.utils.book_new();
     const ws = XLSX.utils.json_to_sheet(preparedItems);
 
-    const listName = `Ціни товарів ${moment().format('(DD.MM.YYYY)')}`
+    const listName = `Ціни товарів ${moment().format('(DD.MM.YYYY)')}`;
 
     XLSX.utils.book_append_sheet(wb, ws, listName);
-    XLSX.writeFile(wb, "MyExcel.xlsx")
+    XLSX.writeFile(wb, 'MyExcel.xlsx');
   };
 
   return (
@@ -97,7 +97,7 @@ const CardList = ({ items, deleteItem, updateItem }: Props) => {
           content={() => (
             <Block padding="20px">
               <ButtonGroup
-                overrides={{ Root: { props: { className: "Table-buttonsAction" } } }}
+                overrides={{ Root: { props: { className: 'Table-buttonsAction' } } }}
               >
                 <Button
                   onClick={setSelectedItemsToDelete}
