@@ -3,12 +3,18 @@ import PriceTagTemplate from 'components/PriceTagTemplate';
 import { useAppData } from 'context';
 
 const PDFPreviewPage = () => {
-  const { items } = useAppData();
+  const { items, storeUrl, currencySymbol, storeName, discountLabel } = useAppData();
 
   return (
-    <div className='pdf-preview'>
+    <div className="pdf-preview">
       <PDFViewer width="100%" height={'100%'}>
-        <PriceTagTemplate items={items} />
+        <PriceTagTemplate
+          discountLabel={discountLabel}
+          storeUrl={storeUrl}
+          currencySymbol={currencySymbol}
+          storeName={storeName}
+          items={items}
+        />
       </PDFViewer>
     </div>
   );

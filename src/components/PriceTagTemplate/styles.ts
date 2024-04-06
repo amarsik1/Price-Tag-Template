@@ -53,8 +53,9 @@ const styles = StyleSheet.create({
   },
   qrCode: {
     width: 50,
-    marginLeft: '-5px',
-    marginBottom: '-5px',
+    height: 50,
+    marginLeft: '-10px',
+    marginBottom: '-3px',
   },
   footerRight: {
     textAlign: 'right',
@@ -74,11 +75,11 @@ const styles = StyleSheet.create({
   centPrice: {
     fontSize: 10,
     fontWeight: 300,
-    marginBottom: 2,
+    marginBottom: -2,
   },
   currencySymbol: {
-    width: 6,
-    height: 6,
+    fontSize: 8,
+    fontFamily: 'Montserrat',
   },
   oldFullPrice: {
     fontSize: 14,
@@ -87,11 +88,14 @@ const styles = StyleSheet.create({
   oldCentPrice: {
     fontSize: 5,
     fontWeight: 300,
-    marginBottom: 2,
+  },
+  priceRightSide: {
+    flexDirection: 'column',
+    justifyContent: 'center',
   },
   oldCurrencySymbol: {
-    width: 4,
-    height: 4,
+    fontSize: 6,
+    fontFamily: 'Montserrat',
   },
   pricePerItemLabel: {
     fontSize: 6,
