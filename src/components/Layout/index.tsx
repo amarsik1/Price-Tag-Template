@@ -1,18 +1,20 @@
 import { useMemo, useState } from 'react';
-import { Outlet } from 'react-router-dom';
-import { useAppData } from 'context';
+import { Outlet, useNavigate } from 'react-router-dom';
 import { Navigation } from 'baseui/side-navigation';
+import { Modal, ModalBody, ROLE, SIZE } from 'baseui/modal';
+import { Button } from 'baseui/button';
 
+import { useAppData } from 'context';
+import { Item } from 'interfaces';
 import DownloadPDFButton from 'components/DownloadPDFButton';
+import Form from 'components/Form';
+import FillSettingsInputsModal from 'components/Modals/FillSettingsInputs';
 
 import './styles.css';
-import { Modal, ModalBody, ROLE, SIZE } from 'baseui/modal';
-import Form from 'components/Form';
-import { Item } from 'interfaces';
-import { Button } from 'baseui/button';
 
 const Layout = () => {
   const { items, setItems } = useAppData();
+  const navigate = useNavigate();
   const [formVisible, setFormVisible] = useState(false);
 
   const addItem = (newItem: Item) => {
@@ -46,6 +48,10 @@ const Layout = () => {
           <Navigation
             activeItemId={location.pathname}
             items={navigationItems}
+            onChange={({ event, item }) => {
+              event.preventDefault();
+              if (item.itemId) navigate(item.itemId);
+            }}
           />
         </div>
 
@@ -75,6 +81,8 @@ const Layout = () => {
           <Form addItem={addItem} />
         </ModalBody>
       </Modal>
+
+      <FillSettingsInputsModal />
     </div>
   );
 };
